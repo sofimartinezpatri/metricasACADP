@@ -204,28 +204,56 @@
 
 <!-- ORGÁNICO -->
 <div id="tab-organico" style="display:none">
-  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px">
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px;margin-bottom:12px">
     <div class="block">
       <div style="display:flex;align-items:center;gap:9px;margin-bottom:12px">
         <div class="camp-icon icon-pink"><i class="ti ti-brand-instagram"></i></div>
-        <div><div class="camp-title">Instagram orgánico</div><div class="camp-sub"><span class="status-dot dot-green"></span>Sin inversión paga</div></div>
+        <div><div class="camp-title">DMs Instagram</div><div class="camp-sub"><span class="status-dot dot-green"></span>Consultas por Instagram</div></div>
       </div>
-      <div class="erow"><span class="kpi-name">Consultas / DMs recibidos</span><input type="number" id="org-dms" placeholder="—" min="0" onchange="recalc()"></div>
-      <div class="erow"><span class="kpi-name">Leads calificados</span><input type="number" id="org-leads" placeholder="—" min="0" onchange="recalc()"></div>
-      <div class="erow"><span class="kpi-name">Inscriptas desde orgánico</span><input type="number" id="org-insc" placeholder="—" min="0" onchange="recalc()"></div>
+      <div class="erow"><span class="kpi-name">DMs recibidos</span><input type="number" id="org-ig-dms" placeholder="—" min="0" onchange="recalc()"></div>
+      <div class="erow"><span class="kpi-name">Leads calificados</span><input type="number" id="org-ig-leads" placeholder="—" min="0" onchange="recalc()"></div>
+      <div class="erow"><span class="kpi-name">Inscriptas</span><input type="number" id="org-ig-insc" placeholder="—" min="0" onchange="recalc()"></div>
       <div style="margin-top:8px;padding-top:8px;border-top:0.5px solid rgba(0,0,0,.08)">
-        <div class="kpi-row"><span class="kpi-name">Tasa conv. DM → inscripta</span><span class="kpi-val" id="org-cvr">—</span></div>
-        <div class="kpi-row"><span class="kpi-name">% del total de inscriptas</span><span class="kpi-val" id="org-pct">—</span></div>
+        <div class="kpi-row"><span class="kpi-name">Tasa conv. DM → inscripta</span><span class="kpi-val" id="org-ig-cvr">—</span></div>
       </div>
     </div>
     <div class="block">
-      <div style="font-size:13px;font-weight:500;margin-bottom:4px">Orgánico vs pago</div>
-      <div class="funnel-note" style="margin-bottom:14px">Comparativo de inscriptas según origen</div>
-      <div class="bar-wrap"><div class="bar-label">Orgánico</div><div class="bar-track"><div class="bar-fill" id="bar-org" style="background:#D4537E;width:0%"></div></div><div class="bar-val" id="bv-org">—</div></div>
-      <div class="bar-wrap"><div class="bar-label">Pago</div><div class="bar-track"><div class="bar-fill" id="bar-pago" style="background:#7F77DD;width:0%"></div></div><div class="bar-val" id="bv-pago">—</div></div>
-      <div style="margin-top:14px;padding-top:14px;border-top:0.5px solid rgba(0,0,0,.08)">
-        <div class="kpi-row"><span class="kpi-name">Total inscriptas orgánico</span><span class="kpi-val" id="org-total-insc">—</span></div>
-        <div class="kpi-row"><span class="kpi-name">Total inscriptas pago</span><span class="kpi-val" id="pago-total-insc">—</span></div>
+      <div style="display:flex;align-items:center;gap:9px;margin-bottom:12px">
+        <div class="camp-icon icon-green"><i class="ti ti-brand-whatsapp"></i></div>
+        <div><div class="camp-title">WhatsApp orgánico</div><div class="camp-sub"><span class="status-dot dot-green"></span>Sin campaña paga</div></div>
+      </div>
+      <div class="erow"><span class="kpi-name">Mensajes recibidos</span><input type="number" id="org-wa-dms" placeholder="—" min="0" onchange="recalc()"></div>
+      <div class="erow"><span class="kpi-name">Leads calificados</span><input type="number" id="org-wa-leads" placeholder="—" min="0" onchange="recalc()"></div>
+      <div class="erow"><span class="kpi-name">Inscriptas</span><input type="number" id="org-wa-insc" placeholder="—" min="0" onchange="recalc()"></div>
+      <div style="margin-top:8px;padding-top:8px;border-top:0.5px solid rgba(0,0,0,.08)">
+        <div class="kpi-row"><span class="kpi-name">Tasa conv. mensaje → inscripta</span><span class="kpi-val" id="org-wa-cvr">—</span></div>
+      </div>
+    </div>
+    <div class="block">
+      <div style="display:flex;align-items:center;gap:9px;margin-bottom:12px">
+        <div class="camp-icon icon-amber"><i class="ti ti-link"></i></div>
+        <div><div class="camp-title">No identificado</div><div class="camp-sub"><span class="status-dot dot-gray"></span>Link directo / sin rastreo</div></div>
+      </div>
+      <div class="erow"><span class="kpi-name">Inscriptas</span><input type="number" id="org-ni-insc" placeholder="—" min="0" onchange="recalc()"></div>
+      <div style="margin-top:8px;padding-top:8px;border-top:0.5px solid rgba(0,0,0,.08)">
+        <div class="funnel-note">Se anotaron directo desde un link sin previo contacto. Considerá agregar UTMs o un campo "¿cómo nos conociste?" en el formulario para rastrearlos.</div>
+      </div>
+    </div>
+  </div>
+  <div class="block">
+    <div style="font-size:13px;font-weight:500;margin-bottom:4px">Resumen orgánico vs pago</div>
+    <div class="funnel-note" style="margin-bottom:14px">Comparativo de inscriptas según origen</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px">
+      <div>
+        <div class="bar-wrap"><div class="bar-label">IG orgánico</div><div class="bar-track"><div class="bar-fill" id="bar-org-ig" style="background:#D4537E;width:0%"></div></div><div class="bar-val" id="bv-org-ig">—</div></div>
+        <div class="bar-wrap"><div class="bar-label">WA orgánico</div><div class="bar-track"><div class="bar-fill" id="bar-org-wa" style="background:#3B6D11;width:0%"></div></div><div class="bar-val" id="bv-org-wa">—</div></div>
+        <div class="bar-wrap"><div class="bar-label">No identificado</div><div class="bar-track"><div class="bar-fill" id="bar-org-ni" style="background:#BA7517;width:0%"></div></div><div class="bar-val" id="bv-org-ni">—</div></div>
+        <div class="bar-wrap"><div class="bar-label">Pago</div><div class="bar-track"><div class="bar-fill" id="bar-pago" style="background:#7F77DD;width:0%"></div></div><div class="bar-val" id="bv-pago">—</div></div>
+      </div>
+      <div>
+        <div class="kpi-row"><span class="kpi-name">Total orgánico</span><span class="kpi-val" id="org-total-insc">—</span></div>
+        <div class="kpi-row"><span class="kpi-name">Total pago</span><span class="kpi-val" id="pago-total-insc">—</span></div>
+        <div class="kpi-row"><span class="kpi-name">% del total es orgánico</span><span class="kpi-val" id="org-pct">—</span></div>
         <div class="kpi-row"><span class="kpi-name">Costo por inscripta pago</span><span class="kpi-val" id="pago-cpi">—</span></div>
         <div class="kpi-row"><span class="kpi-name">Costo por inscripta orgánico</span><span class="kpi-val">$0</span></div>
       </div>
@@ -326,7 +354,7 @@
 </div>
 <script>
 var currentMonth='2025-06',SK='tablero_mkt_v7';
-var FIELDS=['m-chats','m-real','m-inv','e-visits','e-leads','e-inv','c-visits','c-leads','c-inv','em-sent','em-open','em-click','em-inv','wa-sent','wa-resp','wa-inv','org-dms','org-leads','org-insc','x-reg-m','x-reg-wa','x-reg-em','x-reg-org','x-ace-m','x-ace-wa','x-ace-em','x-ace-org','x-mem-m','x-mem-wa','x-mem-em','x-mem-org','x-dip-m','x-dip-wa','x-dip-em','x-dip-org'];
+var FIELDS=['m-chats','m-real','m-inv','e-visits','e-leads','e-inv','c-visits','c-leads','c-inv','em-sent','em-open','em-click','em-inv','wa-sent','wa-resp','wa-inv','org-ig-dms','org-ig-leads','org-ig-insc','org-wa-dms','org-wa-leads','org-wa-insc','org-ni-insc','x-reg-m','x-reg-wa','x-reg-em','x-reg-org','x-ace-m','x-ace-wa','x-ace-em','x-ace-org','x-mem-m','x-mem-wa','x-mem-em','x-mem-org','x-dip-m','x-dip-wa','x-dip-em','x-dip-org'];
 function loadAll(){try{return JSON.parse(localStorage.getItem(SK)||'{}')}catch(e){return{}}}
 function saveData(){var all=loadAll(),d={};FIELDS.forEach(function(id){var el=document.getElementById(id);d[id]=el?el.value:''});all[currentMonth]=d;localStorage.setItem(SK,JSON.stringify(all));var f=document.getElementById('saved-ok');f.style.opacity='1';setTimeout(function(){f.style.opacity='0'},1800);renderHistorico()}
 function loadMonth(m){var all=loadAll(),d=all[m]||{};FIELDS.forEach(function(id){var el=document.getElementById(id);if(el)el.value=d[id]||''});recalc()}
@@ -344,7 +372,10 @@ function recalc(){
   var cV=n('c-visits'),cL=n('c-leads'),cI=nn('c-inv');
   var emS=n('em-sent'),emO=n('em-open'),emCl=n('em-click'),emI=nn('em-inv');
   var waS=n('wa-sent'),waR=n('wa-resp'),waI=nn('wa-inv');
-  var orgDMs=n('org-dms'),orgInsc=nn('org-insc');
+  var orgIgDMs=n('org-ig-dms'),orgIgInsc=nn('org-ig-insc');
+  var orgWaDMs=n('org-wa-dms'),orgWaInsc=nn('org-wa-insc');
+  var orgNiInsc=nn('org-ni-insc');
+  var orgInsc=orgIgInsc+orgWaInsc+orgNiInsc;
   set('m-cpc',mC?fmt(mI/mC,'$'):'—');set('m-cpm',mR?fmt(mI/mR,'$'):'—');set('m-diff',(mC&&mR)?pct((mC-mR)/mC):'—');
   set('e-cvr',(eV&&eL)?pct(eL/eV):'—');set('e-cpl',(eL&&eL>0)?fmt(eI/eL,'$'):'—');
   set('c-cvr',(cV&&cL)?pct(cL/cV):'—');set('c-cpl',(cL&&cL>0&&cI)?fmt(cI/cL,'$'):'—');
@@ -352,7 +383,8 @@ function recalc(){
   set('wa-rate',(waS&&waR)?pct(waR/waS):'—');set('wa-cpr',(waR&&waR>0&&waI)?fmt(waI/waR,'$'):'—');
   var totalInv=mI+eI+cI+emI+waI;
   set('ri-m','$'+mI);set('ri-e','$'+eI);set('ri-c','$'+cI);set('ri-em','$'+emI);set('ri-wa','$'+waI);set('ri-total','$'+totalInv);
-  set('org-cvr',(orgDMs&&orgInsc)?pct(orgInsc/orgDMs):'—');
+  set('org-ig-cvr',(orgIgDMs&&orgIgInsc)?pct(orgIgInsc/orgIgDMs):'—');
+  set('org-wa-cvr',(orgWaDMs&&orgWaInsc)?pct(orgWaInsc/orgWaDMs):'—');
   var prods=['reg','ace','mem','dip'],chans=['m','wa','em','org'];
   var rowT={},colT={m:0,wa:0,em:0,org:0},grand=0;
   prods.forEach(function(p){var t=0;chans.forEach(function(ch){var v=nn('x-'+p+'-'+ch);t+=v;colT[ch]+=v});rowT[p]=t;grand+=t;set('xt-'+p,t||'—')});
@@ -361,8 +393,11 @@ function recalc(){
   set('org-pct',grand>0?pct(inscOrg/grand):'—');
   set('org-total-insc',inscOrg||'—');set('pago-total-insc',inscPago||'—');
   set('pago-cpi',(inscPago>0&&totalInv>0)?fmt(totalInv/inscPago,'$'):'—');
-  var maxOvP=Math.max(inscOrg,inscPago,1);
-  bar('bar-org','bv-org',inscOrg,maxOvP);bar('bar-pago','bv-pago',inscPago,maxOvP);
+  var maxOvP=Math.max(orgIgInsc,orgWaInsc,orgNiInsc,inscPago,1);
+  bar('bar-org-ig','bv-org-ig',orgIgInsc,maxOvP);
+  bar('bar-org-wa','bv-org-wa',orgWaInsc,maxOvP);
+  bar('bar-org-ni','bv-org-ni',orgNiInsc,maxOvP);
+  bar('bar-pago','bv-pago',inscPago,maxOvP);
   var totalLeads=nn('m-chats')+nn('e-leads')+nn('c-leads')+orgInsc;
   set('h-leads',totalLeads);set('h-inscriptas',grand);
   set('h-cvr',totalLeads>0?pct(grand/totalLeads):'—');
