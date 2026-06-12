@@ -348,12 +348,13 @@
 <div id="tab-valor" style="display:none">
   <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px;margin-bottom:12px">
     <div class="block">
-      <div style="font-size:13px;font-weight:500;margin-bottom:4px">Precios por producto (USD/mes)</div>
-      <div class="funnel-note" style="margin-bottom:12px">Se guarda automáticamente. No cambia al cambiar de mes.</div>
-      <div class="erow"><span class="kpi-name">Formación Regular</span><input type="number" id="p-reg" placeholder="0" min="0" onchange="saveConfig();recalc()"></div>
-      <div class="erow"><span class="kpi-name">Acelerado</span><input type="number" id="p-ace" placeholder="0" min="0" onchange="saveConfig();recalc()"></div>
-      <div class="erow"><span class="kpi-name">Diplomatura</span><input type="number" id="p-dip" placeholder="0" min="0" onchange="saveConfig();recalc()"></div>
-      <div class="erow"><span class="kpi-name">Membresía</span><input type="number" id="p-mem" placeholder="0" min="0" onchange="saveConfig();recalc()"></div>
+      <div style="font-size:13px;font-weight:500;margin-bottom:4px">Precios por producto (en $ARS/mes)</div>
+      <div class="funnel-note" style="margin-bottom:12px">Ingresá en pesos. El tablero convierte a USD con el tipo de cambio que configures. Se guarda automáticamente.</div>
+      <div class="erow" style="background:#eeecea;margin:-2px -4px 8px;padding:6px 8px;border-radius:8px"><span class="kpi-name" style="font-weight:500">Tipo de cambio (ARS/USD)</span><input type="number" id="tc" placeholder="ej: 1100" min="1" onchange="saveConfig();recalc()"></div>
+      <div class="erow"><span class="kpi-name">Formación Regular</span><input type="number" id="p-reg" placeholder="$ARS" min="0" onchange="saveConfig();recalc()"></div>
+      <div class="erow"><span class="kpi-name">Acelerado</span><input type="number" id="p-ace" placeholder="$ARS" min="0" onchange="saveConfig();recalc()"></div>
+      <div class="erow"><span class="kpi-name">Diplomatura</span><input type="number" id="p-dip" placeholder="$ARS" min="0" onchange="saveConfig();recalc()"></div>
+      <div class="erow"><span class="kpi-name">Membresía</span><input type="number" id="p-mem" placeholder="$ARS" min="0" onchange="saveConfig();recalc()"></div>
     </div>
     <div class="block">
       <div style="font-size:13px;font-weight:500;margin-bottom:4px">Parámetros de retención</div>
@@ -442,7 +443,7 @@ function loadMonth(m){var all=loadAll(),d=all[m]||{};FIELDS.forEach(function(id)
 function setMonth(btn,m){document.querySelectorAll('.month-btn').forEach(function(b){b.classList.remove('active')});btn.classList.add('active');currentMonth=m;loadMonth(m)}
 function showTab(name,el){['campanas','organico','conversion','valor','historico'].forEach(function(t){document.getElementById('tab-'+t).style.display='none'});document.getElementById('tab-'+name).style.display='';document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('active')});el.classList.add('active')}
 var CK='tablero_mkt_config';
-var CONFIG_FIELDS=['p-reg','p-ace','p-dip','p-mem','pct-dip','pct-mem','mo-mem'];
+var CONFIG_FIELDS=['tc','p-reg','p-ace','p-dip','p-mem','pct-dip','pct-mem','mo-mem'];
 function loadConfig(){var c=JSON.parse(localStorage.getItem(CK)||'{}');CONFIG_FIELDS.forEach(function(id){var el=document.getElementById(id);if(el&&c[id]!==undefined)el.value=c[id]});}
 function saveConfig(){var c={};CONFIG_FIELDS.forEach(function(id){var el=document.getElementById(id);if(el)c[id]=el.value});localStorage.setItem(CK,JSON.stringify(c));}
 function n(id){var el=document.getElementById(id);if(!el)return null;var v=parseFloat(el.value);return isNaN(v)?null:v}
@@ -496,7 +497,8 @@ function recalc(){
   bar('bar-xmem','bv-xmem',rowT.mem||0,maxP);bar('bar-xdip','bv-xdip',rowT.dip||0,maxP);
 
   // LTV
-  var pReg=nn('p-reg'),pAce=nn('p-ace'),pDip=nn('p-dip'),pMem=nn('p-mem');
+  var tc=nn('tc')||1;
+  var pReg=nn('p-reg')/tc,pAce=nn('p-ace')/tc,pDip=nn('p-dip')/tc,pMem=nn('p-mem')/tc;
   var pctDip=nn('pct-dip')/100,pctMem=nn('pct-mem')/100,moMem=nn('mo-mem');
   var dipProm=pctDip*3*pDip, memProm=pctMem*moMem*pMem;
   var ltvReg=24*pReg+dipProm+memProm;
