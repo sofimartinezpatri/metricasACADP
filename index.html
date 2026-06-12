@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tablero de Marketing</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f5f3; color: #1a1a18; min-height: 100vh; padding: 24px 16px; }
+  @media (prefers-color-scheme: dark) {
+    body { background: #1a1a18; color: #e8e6df; }
+    .block { background: #242422 !important; border-color: rgba(255,255,255,0.1) !important; }
+    input[type=number] { background: #2c2c2a !important; color: #e8e6df !important; border-color: rgba(255,255,255,0.2) !important; }
+    .metric-card { background: #2c2c2a !important; }
+    .month-btn { color: #888780 !important; border-color: rgba(255,255,255,0.15) !important; }
+    .month-btn.active { background: #2c2c2a !important; color: #e8e6df !important; }
+    .tab { color: #888780 !important; }
+    .tab.active { color: #e8e6df !important; border-bottom-color: #e8e6df !important; }
+    .tab-bar { border-color: rgba(255,255,255,0.1) !important; }
+    .kpi-name { color: #888780 !important; }
+    .kpi-row { border-color: rgba(255,255,255,0.08) !important; }
+    .erow { border-color: rgba(255,255,255,0.08) !important; }
+    .matrix-table th { border-color: rgba(255,255,255,0.1) !important; color: #888780 !important; }
+    .matrix-table td { border-color: rgba(255,255,255,0.08) !important; }
+    .matrix-table tfoot td { background: #2c2c2a !important; border-color: rgba(255,255,255,0.2) !important; }
+    .bar-track { background: rgba(255,255,255,0.1) !important; }
+    .hero-box { background: #2c2c2a !important; }
+    .section-title { color: #888780 !important; }
+    .metric-label { color: #888780 !important; }
+    .metric-sub { color: #5f5e5a !important; }
+    .camp-sub { color: #888780 !important; }
+    .ri-block { border-color: rgba(255,255,255,0.2) !important; }
+    .funnel-note { color: #5f5e5a !important; }
+    h1 { color: #e8e6df !important; }
+  }
+  .container { max-width: 900px; margin: 0 auto; }
+  h1 { font-size: 18px; font-weight: 500; margin-bottom: 20px; color: #1a1a18; }
+  .metric-card { background: #eeecea; border-radius: 8px; padding: 12px 14px; }
+  .metric-label { font-size: 12px; color: #888780; margin: 0 0 3px; }
+  .metric-value { font-size: 20px; font-weight: 500; color: #1a1a18; margin: 0; line-height: 1.2; }
+  .metric-sub { font-size: 11px; color: #b4b2a9; margin: 3px 0 0; }
+  .block { background: #fff; border: 0.5px solid rgba(0,0,0,0.12); border-radius: 12px; padding: 14px 16px; }
+  .kpi-row { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 0.5px solid rgba(0,0,0,0.08); font-size: 13px; }
+  .kpi-row:last-child { border-bottom: none; padding-bottom: 0; }
+  .kpi-name { color: #888780; }
+  .kpi-val { font-weight: 500; color: #1a1a18; }
+  .status-dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; margin-right: 4px; }
+  .dot-green { background: #639922; } .dot-yellow { background: #BA7517; } .dot-gray { background: #888780; }
+  .camp-icon { width: 30px; height: 30px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 15px; flex-shrink: 0; }
+  .icon-purple { background: #EEEDFE; color: #534AB7; } .icon-teal { background: #E1F5EE; color: #0F6E56; }
+  .icon-amber { background: #FAEEDA; color: #854F0B; } .icon-blue { background: #E6F1FB; color: #185FA5; }
+  .icon-green { background: #EAF3DE; color: #3B6D11; }
+  .camp-title { font-size: 13px; font-weight: 500; color: #1a1a18; margin: 0; }
+  .camp-sub { font-size: 11px; color: #888780; margin: 1px 0 0; }
+  input[type=number] { width: 72px; padding: 4px 6px; font-size: 13px; border: 0.5px solid rgba(0,0,0,0.2); border-radius: 8px; background: #fff; color: #1a1a18; text-align: right; outline: none; }
+  input[type=number]:focus { border-color: rgba(0,0,0,0.4); }
+  .erow { display: flex; justify-content: space-between; align-items: center; padding: 5px 0; border-bottom: 0.5px solid rgba(0,0,0,0.08); font-size: 13px; }
+  .erow:last-child { border-bottom: none; }
+  .badge { font-size: 11px; padding: 2px 8px; border-radius: 20px; }
+  .badge-warn { background: #FAEEDA; color: #854F0B; }
+  .bar-wrap { display: flex; align-items: center; gap: 8px; margin: 5px 0; }
+  .bar-label { font-size: 12px; color: #888780; width: 110px; text-align: right; flex-shrink: 0; }
+  .bar-track { flex: 1; height: 9px; background: rgba(0,0,0,0.08); border-radius: 6px; overflow: hidden; }
+  .bar-fill { height: 100%; border-radius: 6px; transition: width 0.35s; }
+  .bar-val { font-size: 11px; color: #888780; min-width: 28px; }
+  .month-bar { display: flex; align-items: center; gap: 6px; margin-bottom: 16px; flex-wrap: wrap; }
+  .month-btn { padding: 4px 10px; font-size: 12px; border: 0.5px solid rgba(0,0,0,0.2); border-radius: 8px; cursor: pointer; background: transparent; color: #888780; }
+  .month-btn.active { background: #eeecea; color: #1a1a18; font-weight: 500; border-color: rgba(0,0,0,0.35); }
+  .save-btn { padding: 5px 14px; font-size: 12px; cursor: pointer; margin-left: auto; border: 0.5px solid rgba(0,0,0,0.2); border-radius: 8px; background: transparent; }
+  .save-btn:hover { background: #eeecea; }
+  .saved-ok { font-size: 11px; color: #3B6D11; opacity: 0; transition: opacity 0.3s; margin-left: 6px; }
+  .tab-bar { display: flex; gap: 0; border-bottom: 0.5px solid rgba(0,0,0,0.12); margin-bottom: 14px; }
+  .tab { padding: 7px 14px; font-size: 13px; cursor: pointer; color: #888780; border-bottom: 2px solid transparent; margin-bottom: -1px; }
+  .tab.active { color: #1a1a18; font-weight: 500; border-bottom-color: #1a1a18; }
+  .section-title { font-size: 11px; font-weight: 500; color: #888780; text-transform: uppercase; letter-spacing: 0.08em; margin: 0 0 10px; }
+  .matrix-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .matrix-table th { padding: 8px 10px; font-weight: 500; color: #888780; border-bottom: 0.5px solid rgba(0,0,0,0.12); text-align: center; font-size: 12px; }
+  .matrix-table th.row-header { text-align: left; }
+  .matrix-table td { padding: 6px 8px; border-bottom: 0.5px solid rgba(0,0,0,0.08); vertical-align: middle; }
+  .matrix-table tr:last-child td { border-bottom: none; }
+  .matrix-table td.row-header { font-size: 12px; color: #888780; white-space: nowrap; }
+  .matrix-table td.row-header .pdot { display: inline-block; width: 8px; height: 8px; border-radius: 2px; margin-right: 6px; vertical-align: middle; }
+  .matrix-table td input[type=number] { width: 60px; padding: 3px 5px; font-size: 12px; }
+  .matrix-table td.total-col { font-weight: 500; color: #1a1a18; text-align: center; font-size: 13px; }
+  .matrix-table tfoot td { font-weight: 500; color: #1a1a18; padding: 8px 10px; border-top: 0.5px solid rgba(0,0,0,0.2); font-size: 13px; text-align: center; background: #eeecea; }
+  .matrix-table tfoot td.row-header { text-align: left; font-size: 12px; color: #888780; }
+  .channel-badge { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; padding: 2px 8px; border-radius: 20px; white-space: nowrap; }
+  .cb-purple { background: #EEEDFE; color: #534AB7; } .cb-green { background: #EAF3DE; color: #3B6D11; } .cb-blue { background: #E6F1FB; color: #185FA5; }
+  .funnel-note { font-size: 11px; color: #b4b2a9; font-style: italic; margin-top: 4px; }
+  .hero-box { background: #eeecea; border-radius: 12px; padding: 14px 18px; margin-bottom: 16px; }
+</style>
+</head>
+<body>
+<div class="container">
+
+<h1>Tablero de Marketing</h1>
+
+<div class="month-bar">
+  <span style="font-size:12px;color:#888780;margin-right:2px;">Mes:</span>
+  <button class="month-btn active" onclick="setMonth(this,'2025-06')">Jun</button>
+  <button class="month-btn" onclick="setMonth(this,'2025-07')">Jul</button>
+  <button class="month-btn" onclick="setMonth(this,'2025-08')">Ago</button>
+  <button class="month-btn" onclick="setMonth(this,'2025-09')">Sep</button>
+  <button class="month-btn" onclick="setMonth(this,'2025-10')">Oct</button>
+  <button class="month-btn" onclick="setMonth(this,'2025-11')">Nov</button>
+  <button class="month-btn" onclick="setMonth(this,'2025-12')">Dic</button>
+  <button class="save-btn" onclick="saveData()">Guardar mes</button>
+  <span class="saved-ok" id="saved-ok">Guardado ✓</span>
+</div>
+
+<!-- HERO -->
+<div class="hero-box">
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;">
+    <div class="metric-card"><div class="metric-label">Leads totales</div><div class="metric-value" id="h-leads">0</div><div class="metric-sub">todos los canales</div></div>
+    <div class="metric-card"><div class="metric-label">Inscriptas nuevas</div><div class="metric-value" id="h-inscriptas">0</div><div class="metric-sub">este mes</div></div>
+    <div class="metric-card"><div class="metric-label">% Conversión</div><div class="metric-value" id="h-cvr">—</div><div class="metric-sub">leads → inscriptas</div></div>
+    <div class="metric-card"><div class="metric-label">Inversión total</div><div class="metric-value" id="h-inv">$0</div><div class="metric-sub">todos los canales</div></div>
+    <div class="metric-card"><div class="metric-label">Costo por inscripta</div><div class="metric-value" id="h-cpi">—</div><div class="metric-sub">inversión / inscriptas</div></div>
+  </div>
+</div>
+
+<!-- TABS -->
+<div class="tab-bar">
+  <div class="tab active" onclick="showTab('campanas',this)">Campañas</div>
+  <div class="tab" onclick="showTab('conversion',this)">Conversión</div>
+  <div class="tab" onclick="showTab('historico',this)">Histórico</div>
+</div>
+
+<!-- TAB CAMPAÑAS -->
+<div id="tab-campanas">
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px;">
+
+    <div class="block">
+      <div style="display:flex;align-items:center;gap:9px;margin-bottom:12px;">
+        <div class="camp-icon icon-purple"><i class="ti ti-brand-whatsapp"></i></div>
+        <div><div class="camp-title">META Mensajes</div><div class="camp-sub"><span class="status-dot dot-green"></span>Activa · Salud</div></div>
+      </div>
+      <div class="erow"><span class="kpi-name">Chats reportados por META</span><input type="number" id="m-chats" value="5" min="0" onchange="recalc()"></div>
+      <div class="erow"><span class="kpi-name">Mensajes reales recibidos</span><input type="number" id="m-real" placeholder="—" min="0" onchange="recalc()"></div>
+      <div class="erow"><span class="kpi-name">Invertido ($)</span><input type="number" id="m-inv" value="15" min="0" onchange="recalc()"></div>
+      <div style="margin-top:8px;padding-top:8px;border-top:0.5px solid rgba(0,0,0,0.08);">
+        <div class="kpi-row"><span class="kpi-name">Costo por chat META</span><span class="kpi-val" id="m-cpc">—</span></div>
+        <div class="kpi-row"><span class="kpi-name">Costo por mensaje real</span><span class="kpi-val" id="m-cpm">—</span></div>
+        <div class="kpi-row"><span class="kpi-name">% diferencia META vs real</span><span class="kpi-val" id="m-diff">—</span></div>
+      </div>
+    </div>
+
+    <div class="block">
+      <div style="display:flex;align-items:center;gap:9px;margin-bottom:12px;">
+        <div class="camp-icon icon-teal"><i class="ti ti-book"></i></div>
+        <div><div class="camp-title">E-book Lead Magnet</div><div class="camp-sub"><span class="status-dot dot-yellow"></span>Activa · revisar landing</div></div>
+      </div>
+      <div class="erow"><span class="kpi-name">Visitas a la página</span><input type="number" id="e-visits" value="187" min="0" onchange="recalc()"></div>
+      <div class="erow"><span class="kpi-name">Leads captados</span><input type="number" id="e-leads" value="2" min="0" onchange="recalc()"></div>
+      <div class="erow"><span class="kpi-name">Invertido ($)</span><input type="number" id="e-inv" value="14" min="0" onchange="recalc()"></div>
+      <div style="margin-top:8px;padding-top:8px;border-top:0.5px solid rgba(0,0,0,0.08);">
+        <div class="kpi-row"><span class="kpi-name">Tasa conv. visita → lead</span><span class="kpi-val" id="e-cvr">—</span></div>
+        <div class="kpi-row"><span class="kpi-name">CPL (costo por lead)</span><span class="kpi-val" id="e-cpl">—</span></div>
+        <div class="kpi-row"><span class="kpi-name">Estado landing</span><span><span class="badge badge-warn">Mejorar</span></span></div>
+      </div>
+    </div>
+
+    <div class="block">
+      <div style="display:flex;align-items:center;gap:9px;margin-bottom:12px;">
+        <div class="camp-icon icon-amber"><i class="ti ti-video"></i></div>
+        <div><div class="camp-title">Clase gratuita grabada</div><div class="camp-sub"><span class="status-dot dot-gray"></span>Por lanzar</div></div>
+      </div>
+      <div class="erow"><span class="kpi-name">Visitas a la página</span><input type="number" id="c-visits" placeholder="—" min="0" onchange="recalc()"></div>
+      <div class="erow"><span class="kpi-name">Registros / leads</span><input type="number" id="c-leads" placeholder="—" min="0" onchange="recalc()"></div>
+      <div class="erow"><span class="kpi-name">Invertido ($)</span><input type="number" id="c-inv" placeholder="—" min="0" onchange="recalc()"></div>
+      <div style="margin-top:8px;padding-top:8px;border-top:0.5px solid rgba(0,0,0,0.08);">
+        <div class="kpi-row"><span class="kpi-name">Tasa conv. visita → lead</span><span class="kpi-val" id="c-cvr">—</span></div>
+        <div class="kpi-row"><span class="kpi-name">CPL clase</span><span class="kpi-val" id="c-cpl">—</span></div>
+      </div>
+    </div>
+
+    <div class="block">
+      <div style="display:flex;align-items:center;gap:9px;margin-bottom:12px;">
+        <div class="camp-icon icon-blue"><i class="ti ti-mail"></i></div>
+        <div><div class="camp-title">Email marketing</div><div class="camp-sub"><span class="status-dot dot-gray"></span>Cierres</div></div>
+      </div>
+      <div class="erow"><span class="kpi-name">Emails enviados</span><input type="number" id="em-sent" placeholder="—" min="0" onchange="recalc()"></div>
+      <div class="erow"><span class="kpi-name">Aperturas</span><input type="number" id="em-open" placeholder="—" min="0" onchange="recalc()"></div>
+      <div class="erow"><span class="kpi-name">Clics</span><input type="number" id="em-click" placeholder="—" min="0" onchange="recalc()"></div>
+      <div class="erow"><span class="kpi-name">Invertido ($)</span><input type="number" id="em-inv" placeholder="—" min="0" onchange="recalc()"></div>
+      <div style="margin-top:8px;padding-top:8px;border-top:0.5px solid rgba(0,0,0,0.08);">
+        <div class="kpi-row"><span class="kpi-name">Tasa apertura</span><span class="kpi-val" id="em-open-rate">—</span></div>
+        <div class="kpi-row"><span class="kpi-name">Tasa de clic (CTR)</span><span class="kpi-val" id="em-ctr">—</span></div>
+      </div>
+    </div>
+
+    <div class="block">
+      <div style="display:flex;align-items:center;gap:9px;margin-bottom:12px;">
+        <div class="camp-icon icon-green"><i class="ti ti-brand-whatsapp"></i></div>
+        <div><div class="camp-title">WhatsApp puntual</div><div class="camp-sub"><span class="status-dot dot-gray"></span>Campañas ocasionales</div></div>
+      </div>
+      <div class="erow"><span class="kpi-name">Mensajes enviados</span><input type="number" id="wa-sent" placeholder="—" min="0" onchange="recalc()"></div>
+      <div class="erow"><span class="kpi-name">Respuestas recibidas</span><input type="number" id="wa-resp" placeholder="—" min="0" onchange="recalc()"></div>
+      <div class="erow"><span class="kpi-name">Invertido ($)</span><input type="number" id="wa-inv" placeholder="—" min="0" onchange="recalc()"></div>
+      <div style="margin-top:8px;padding-top:8px;border-top:0.5px solid rgba(0,0,0,0.08);">
+        <div class="kpi-row"><span class="kpi-name">Tasa de respuesta</span><span class="kpi-val" id="wa-rate">—</span></div>
+        <div class="kpi-row"><span class="kpi-name">Costo por respuesta</span><span class="kpi-val" id="wa-cpr">—</span></div>
+      </div>
+    </div>
+
+    <div class="block ri-block" style="border-color:rgba(0,0,0,0.2);">
+      <div style="font-size:13px;font-weight:500;margin-bottom:12px;">Desglose de inversión total</div>
+      <div class="kpi-row"><span class="kpi-name">META Mensajes</span><span class="kpi-val" id="ri-m">$0</span></div>
+      <div class="kpi-row"><span class="kpi-name">E-book Lead Magnet</span><span class="kpi-val" id="ri-e">$0</span></div>
+      <div class="kpi-row"><span class="kpi-name">Clase gratuita</span><span class="kpi-val" id="ri-c">$0</span></div>
+      <div class="kpi-row"><span class="kpi-name">Email marketing</span><span class="kpi-val" id="ri-em">$0</span></div>
+      <div class="kpi-row"><span class="kpi-name">WhatsApp puntual</span><span class="kpi-val" id="ri-wa">$0</span></div>
+      <div style="margin-top:10px;padding-top:10px;border-top:0.5px solid rgba(0,0,0,0.2);display:flex;justify-content:space-between;align-items:center;">
+        <span style="font-size:13px;font-weight:500;">Total</span>
+        <span style="font-size:16px;font-weight:500;" id="ri-total">$0</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- TAB CONVERSIÓN -->
+<div id="tab-conversion" style="display:none;">
+  <div class="block" style="margin-bottom:14px;">
+    <div style="font-size:13px;font-weight:500;margin-bottom:2px;">Inscriptas por canal y producto</div>
+    <div class="funnel-note" style="margin-bottom:14px;">E-book y clase operan como lead magnets — la conversión ocurre por META, WhatsApp o Email.</div>
+    <div style="overflow-x:auto;">
+    <table class="matrix-table">
+      <thead>
+        <tr>
+          <th class="row-header">Producto</th>
+          <th><span class="channel-badge cb-purple"><i class="ti ti-brand-whatsapp" style="font-size:11px;"></i> META</span></th>
+          <th><span class="channel-badge cb-green"><i class="ti ti-brand-whatsapp" style="font-size:11px;"></i> WhatsApp</span></th>
+          <th><span class="channel-badge cb-blue"><i class="ti ti-mail" style="font-size:11px;"></i> Email</span></th>
+          <th style="font-weight:500;font-size:12px;">Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="row-header"><span class="pdot" style="background:#7F77DD;"></span>Formación Regular</td>
+          <td style="text-align:center;"><input type="number" id="x-reg-m" placeholder="—" min="0" onchange="recalc()"></td>
+          <td style="text-align:center;"><input type="number" id="x-reg-wa" placeholder="—" min="0" onchange="recalc()"></td>
+          <td style="text-align:center;"><input type="number" id="x-reg-em" placeholder="—" min="0" onchange="recalc()"></td>
+          <td class="total-col" id="xt-reg">—</td>
+        </tr>
+        <tr>
+          <td class="row-header"><span class="pdot" style="background:#1D9E75;"></span>Acelerado</td>
+          <td style="text-align:center;"><input type="number" id="x-ace-m" placeholder="—" min="0" onchange="recalc()"></td>
+          <td style="text-align:center;"><input type="number" id="x-ace-wa" placeholder="—" min="0" onchange="recalc()"></td>
+          <td style="text-align:center;"><input type="number" id="x-ace-em" placeholder="—" min="0" onchange="recalc()"></td>
+          <td class="total-col" id="xt-ace">—</td>
+        </tr>
+        <tr>
+          <td class="row-header"><span class="pdot" style="background:#EF9F27;"></span>Membresía</td>
+          <td style="text-align:center;"><input type="number" id="x-mem-m" placeholder="—" min="0" onchange="recalc()"></td>
+          <td style="text-align:center;"><input type="number" id="x-mem-wa" placeholder="—" min="0" onchange="recalc()"></td>
+          <td style="text-align:center;"><input type="number" id="x-mem-em" placeholder="—" min="0" onchange="recalc()"></td>
+          <td class="total-col" id="xt-mem">—</td>
+        </tr>
+        <tr>
+          <td class="row-header"><span class="pdot" style="background:#D85A30;"></span>Diplomatura</td>
+          <td style="text-align:center;"><input type="number" id="x-dip-m" placeholder="—" min="0" onchange="recalc()"></td>
+          <td style="text-align:center;"><input type="number" id="x-dip-wa" placeholder="—" min="0" onchange="recalc()"></td>
+          <td style="text-align:center;"><input type="number" id="x-dip-em" placeholder="—" min="0" onchange="recalc()"></td>
+          <td class="total-col" id="xt-dip">—</td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td class="row-header">Total por canal</td>
+          <td id="xc-m" style="text-align:center;">—</td>
+          <td id="xc-wa" style="text-align:center;">—</td>
+          <td id="xc-em" style="text-align:center;">—</td>
+          <td id="xc-total" style="text-align:center;">—</td>
+        </tr>
+      </tfoot>
+    </table>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px;">
+    <div class="block">
+      <div class="section-title">Inscriptas por canal de cierre</div>
+      <div class="bar-wrap"><div class="bar-label">META</div><div class="bar-track"><div class="bar-fill" id="bar-xm" style="background:#7F77DD;width:0%;"></div></div><div class="bar-val" id="bv-xm">—</div></div>
+      <div class="bar-wrap"><div class="bar-label">WhatsApp</div><div class="bar-track"><div class="bar-fill" id="bar-xwa" style="background:#639922;width:0%;"></div></div><div class="bar-val" id="bv-xwa">—</div></div>
+      <div class="bar-wrap"><div class="bar-label">Email</div><div class="bar-track"><div class="bar-fill" id="bar-xem" style="background:#378ADD;width:0%;"></div></div><div class="bar-val" id="bv-xem">—</div></div>
+    </div>
+    <div class="block">
+      <div class="section-title">Inscriptas por producto</div>
+      <div class="bar-wrap"><div class="bar-label">Formación Regular</div><div class="bar-track"><div class="bar-fill" id="bar-xreg" style="background:#7F77DD;width:0%;"></div></div><div class="bar-val" id="bv-xreg">—</div></div>
+      <div class="bar-wrap"><div class="bar-label">Acelerado</div><div class="bar-track"><div class="bar-fill" id="bar-xace" style="background:#1D9E75;width:0%;"></div></div><div class="bar-val" id="bv-xace">—</div></div>
+      <div class="bar-wrap"><div class="bar-label">Membresía</div><div class="bar-track"><div class="bar-fill" id="bar-xmem" style="background:#EF9F27;width:0%;"></div></div><div class="bar-val" id="bv-xmem">—</div></div>
+      <div class="bar-wrap"><div class="bar-label">Diplomatura</div><div class="bar-track"><div class="bar-fill" id="bar-xdip" style="background:#D85A30;width:0%;"></div></div><div class="bar-val" id="bv-xdip">—</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- TAB HISTÓRICO -->
+<div id="tab-historico" style="display:none;">
+  <div class="block">
+    <div style="font-size:13px;font-weight:500;margin-bottom:14px;">Evolución mensual — Jun a Dic 2025</div>
+    <div id="historico-content" style="font-size:13px;color:#888780;">Guardá datos de cada mes para ver el histórico aquí.</div>
+  </div>
+</div>
+
+</div>
+<script>
+var currentMonth='2025-06';
+var SK='tablero_mkt_v7';
+var FIELDS=['m-chats','m-real','m-inv','e-visits','e-leads','e-inv','c-visits','c-leads','c-inv','em-sent','em-open','em-click','em-inv','wa-sent','wa-resp','wa-inv','x-reg-m','x-reg-wa','x-reg-em','x-ace-m','x-ace-wa','x-ace-em','x-mem-m','x-mem-wa','x-mem-em','x-dip-m','x-dip-wa','x-dip-em'];
+function loadAll(){try{return JSON.parse(localStorage.getItem(SK)||'{}')}catch(e){return{}}}
+function saveData(){var all=loadAll(),d={};FIELDS.forEach(function(id){var el=document.getElementById(id);d[id]=el?el.value:''});all[currentMonth]=d;localStorage.setItem(SK,JSON.stringify(all));var f=document.getElementById('saved-ok');f.style.opacity='1';setTimeout(function(){f.style.opacity='0'},1800);renderHistorico()}
+function loadMonth(m){var all=loadAll(),d=all[m]||{};FIELDS.forEach(function(id){var el=document.getElementById(id);if(el)el.value=d[id]||''});recalc()}
+function setMonth(btn,m){document.querySelectorAll('.month-btn').forEach(function(b){b.classList.remove('active')});btn.classList.add('active');currentMonth=m;loadMonth(m)}
+function showTab(name,el){['campanas','conversion','historico'].forEach(function(t){document.getElementById('tab-'+t).style.display='none'});document.getElementById('tab-'+name).style.display='';document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('active')});el.classList.add('active')}
+function n(id){var el=document.getElementById(id);if(!el)return null;var v=parseFloat(el.value);return isNaN(v)?null:v}
+function nn(id){return n(id)||0}
+function fmt(v,pre){if(v===null||isNaN(v)||!isFinite(v))return'—';return(pre||'')+(Math.round(v*100)/100).toFixed(2)}
+function pct(v){if(v===null||isNaN(v)||!isFinite(v))return'—';return(Math.round(v*1000)/10).toFixed(1)+'%'}
+function set(id,val){var el=document.getElementById(id);if(el)el.textContent=val}
+function bar(bid,vvid,val,max){var b=document.getElementById(bid),bv=document.getElementById(vvid);if(b)b.style.width=(val/Math.max(max,1)*100)+'%';if(bv)bv.textContent=val||'—'}
+function recalc(){
+  var mC=n('m-chats'),mR=n('m-real'),mI=nn('m-inv');
+  var eV=n('e-visits'),eL=n('e-leads'),eI=nn('e-inv');
+  var cV=n('c-visits'),cL=n('c-leads'),cI=nn('c-inv');
+  var emS=n('em-sent'),emO=n('em-open'),emCl=n('em-click'),emI=nn('em-inv');
+  var waS=n('wa-sent'),waR=n('wa-resp'),waI=nn('wa-inv');
+  set('m-cpc',mC?fmt(mI/mC,'$'):'—');set('m-cpm',mR?fmt(mI/mR,'$'):'—');set('m-diff',(mC&&mR)?pct((mC-mR)/mC):'—');
+  set('e-cvr',(eV&&eL)?pct(eL/eV):'—');set('e-cpl',(eL&&eL>0)?fmt(eI/eL,'$'):'—');
+  set('c-cvr',(cV&&cL)?pct(cL/cV):'—');set('c-cpl',(cL&&cL>0&&cI)?fmt(cI/cL,'$'):'—');
+  set('em-open-rate',(emS&&emO)?pct(emO/emS):'—');set('em-ctr',(emS&&emCl)?pct(emCl/emS):'—');
+  set('wa-rate',(waS&&waR)?pct(waR/waS):'—');set('wa-cpr',(waR&&waR>0&&waI)?fmt(waI/waR,'$'):'—');
+  var totalInv=mI+eI+cI+emI+waI;
+  set('ri-m','$'+mI);set('ri-e','$'+eI);set('ri-c','$'+cI);set('ri-em','$'+emI);set('ri-wa','$'+waI);set('ri-total','$'+totalInv);
+  var prods=['reg','ace','mem','dip'],chans=['m','wa','em'];
+  var rowT={},colT={m:0,wa:0,em:0},grand=0;
+  prods.forEach(function(p){var t=0;chans.forEach(function(ch){var v=nn('x-'+p+'-'+ch);t+=v;colT[ch]+=v});rowT[p]=t;grand+=t;set('xt-'+p,t||'—')});
+  chans.forEach(function(ch){set('xc-'+ch,colT[ch]||'—')});set('xc-total',grand||'—');
+  var totalLeads=nn('m-chats')+nn('e-leads')+nn('c-leads');
+  set('h-leads',totalLeads);set('h-inscriptas',grand);set('h-cvr',totalLeads>0?pct(grand/totalLeads):'—');
+  set('h-inv','$'+Math.round(totalInv));set('h-cpi',(grand>0&&totalInv>0)?fmt(totalInv/grand,'$'):'—');
+  var maxC=Math.max(colT.m,colT.wa,colT.em,1);
+  bar('bar-xm','bv-xm',colT.m,maxC);bar('bar-xwa','bv-xwa',colT.wa,maxC);bar('bar-xem','bv-xem',colT.em,maxC);
+  var maxP=Math.max(rowT.reg||0,rowT.ace||0,rowT.mem||0,rowT.dip||0,1);
+  bar('bar-xreg','bv-xreg',rowT.reg||0,maxP);bar('bar-xace','bv-xace',rowT.ace||0,maxP);
+  bar('bar-xmem','bv-xmem',rowT.mem||0,maxP);bar('bar-xdip','bv-xdip',rowT.dip||0,maxP);
+}
+function renderHistorico(){
+  var all=loadAll();
+  var months=['2025-06','2025-07','2025-08','2025-09','2025-10','2025-11','2025-12'].filter(function(m){return all[m]});
+  if(!months.length){set('historico-content','Guardá datos de cada mes para ver el histórico aquí.');return}
+  var names={'2025-06':'Jun','2025-07':'Jul','2025-08':'Ago','2025-09':'Sep','2025-10':'Oct','2025-11':'Nov','2025-12':'Dic'};
+  var html='<div style="overflow-x:auto;"><table style="width:100%;font-size:12px;border-collapse:collapse;">';
+  html+='<tr style="border-bottom:0.5px solid rgba(0,0,0,0.12);"><th style="text-align:left;padding:6px 8px;font-weight:500;color:#888780;">Mes</th><th style="text-align:right;padding:6px 8px;font-weight:500;color:#888780;">Leads</th><th style="text-align:right;padding:6px 8px;font-weight:500;color:#888780;">Inscriptas</th><th style="text-align:right;padding:6px 8px;font-weight:500;color:#888780;">% Conv.</th><th style="text-align:right;padding:6px 8px;font-weight:500;color:#888780;">META</th><th style="text-align:right;padding:6px 8px;font-weight:500;color:#888780;">WA</th><th style="text-align:right;padding:6px 8px;font-weight:500;color:#888780;">Email</th><th style="text-align:right;padding:6px 8px;font-weight:500;color:#888780;">Inversión</th><th style="text-align:right;padding:6px 8px;font-weight:500;color:#888780;">$/inscripta</th></tr>';
+  months.forEach(function(m){
+    var d=all[m],g=function(id){return parseFloat(d[id])||0};
+    var leads=g('m-chats')+g('e-leads')+g('c-leads');
+    var inv=g('m-inv')+g('e-inv')+g('c-inv')+g('em-inv')+g('wa-inv');
+    var prods=['reg','ace','mem','dip'],chM=0,chWa=0,chEm=0;
+    prods.forEach(function(p){chM+=g('x-'+p+'-m');chWa+=g('x-'+p+'-wa');chEm+=g('x-'+p+'-em')});
+    var insc=chM+chWa+chEm;
+    var cvrStr=leads>0?Math.round(insc/leads*1000)/10+'%':'—';
+    var cpiStr=(insc>0&&inv>0)?'$'+(Math.round(inv/insc*100)/100).toFixed(2):'—';
+    html+='<tr style="border-bottom:0.5px solid rgba(0,0,0,0.08);"><td style="padding:6px 8px;font-weight:500;">'+names[m]+'</td><td style="text-align:right;padding:6px 8px;">'+leads+'</td><td style="text-align:right;padding:6px 8px;font-weight:500;">'+insc+'</td><td style="text-align:right;padding:6px 8px;">'+cvrStr+'</td><td style="text-align:right;padding:6px 8px;">'+chM+'</td><td style="text-align:right;padding:6px 8px;">'+chWa+'</td><td style="text-align:right;padding:6px 8px;">'+chEm+'</td><td style="text-align:right;padding:6px 8px;">$'+inv+'</td><td style="text-align:right;padding:6px 8px;">'+cpiStr+'</td></tr>'
+  });
+  html+='</table></div>';
+  document.getElementById('historico-content').innerHTML=html;
+}
+loadMonth(currentMonth);renderHistorico();
+</script>
+</body>
+</html>
