@@ -24,7 +24,7 @@ export default async function handler(req, res) {
       const data = await response.json();
       return res.status(200).json(data);
     } catch (err) {
-      return res.status(500).json({ error: 'No se pudo leer el almacenamiento compartido.' });
+      return res.status(500).json({ error: 'No se pudo leer el almacenamiento compartido.', detail: String(err && err.message || err) });
     }
   }
 
@@ -42,7 +42,7 @@ export default async function handler(req, res) {
       });
       return res.status(200).json({ ok: true });
     } catch (err) {
-      return res.status(500).json({ error: 'No se pudo guardar en el almacenamiento compartido.' });
+      return res.status(500).json({ error: 'No se pudo guardar en el almacenamiento compartido.', detail: String(err && err.message || err) });
     }
   }
 
