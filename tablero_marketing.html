@@ -5,13 +5,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Tablero de Marketing</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&display=swap">
 <style>
+  :root{--brand-primary:#971454;--brand-primary-dark:#6e0f3d;--brand-accent:#FF8110;--brand-pink:#FF8F9F;--brand-deep:#CD0F4D}
   *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-  body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f5f5f3;color:#1a1a18;min-height:100vh;padding:24px 16px}
+  body{font-family:'Open Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f5f5f3;color:#1a1a18;min-height:100vh;padding:24px 16px}
   @media(prefers-color-scheme:dark){
     body{background:#1a1a18;color:#e8e6df}
     .block{background:#242422!important;border-color:rgba(255,255,255,.1)!important}
-    input[type=number]{background:#2c2c2a!important;color:#e8e6df!important;border-color:rgba(255,255,255,.2)!important}
+    input[type=number],textarea{background:#2c2c2a!important;color:#e8e6df!important;border-color:rgba(255,255,255,.2)!important}
     .metric-card{background:#2c2c2a!important}
     .month-btn{color:#888780!important;border-color:rgba(255,255,255,.15)!important}
     .month-btn.active{background:#2c2c2a!important;color:#e8e6df!important}
@@ -38,9 +41,9 @@
   .status-dot{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:4px}
   .dot-green{background:#639922}.dot-yellow{background:#BA7517}.dot-gray{background:#888780}
   .camp-icon{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
-  .icon-purple{background:#EEEDFE;color:#534AB7}.icon-teal{background:#E1F5EE;color:#0F6E56}
-  .icon-amber{background:#FAEEDA;color:#854F0B}.icon-blue{background:#E6F1FB;color:#185FA5}
-  .icon-green{background:#EAF3DE;color:#3B6D11}.icon-pink{background:#FBEAF0;color:#993356}
+  .icon-purple{background:#F5E3EC;color:var(--brand-primary)}.icon-teal{background:#FFE8D1;color:#B85F0C}
+  .icon-amber{background:#FFE3E7;color:var(--brand-deep)}.icon-blue{background:#FCE4EC;color:var(--brand-primary-dark)}
+  .icon-green{background:#F5E3EC;color:var(--brand-primary)}.icon-pink{background:#FFE3E7;color:var(--brand-deep)}
   .camp-title{font-size:13px;font-weight:500;color:#1a1a18;margin:0}
   .camp-sub{font-size:11px;color:#888780;margin:1px 0 0}
   input[type=number]{width:72px;padding:4px 6px;font-size:13px;border:0.5px solid rgba(0,0,0,.2);border-radius:8px;background:#fff;color:#1a1a18;text-align:right;outline:none}
@@ -56,13 +59,17 @@
   .bar-val{font-size:11px;color:#888780;min-width:28px}
   .month-bar{display:flex;align-items:center;gap:6px;margin-bottom:16px;flex-wrap:wrap}
   .month-btn{padding:4px 10px;font-size:12px;border:0.5px solid rgba(0,0,0,.2);border-radius:8px;cursor:pointer;background:transparent;color:#888780}
-  .month-btn.active{background:#eeecea;color:#1a1a18;font-weight:500;border-color:rgba(0,0,0,.35)}
+  .month-btn.active{background:var(--brand-primary);color:#fff;font-weight:500;border-color:var(--brand-primary)}
   .save-btn{padding:5px 14px;font-size:12px;cursor:pointer;margin-left:auto;border:0.5px solid rgba(0,0,0,.2);border-radius:8px;background:transparent}
   .save-btn:hover{background:#eeecea}
-  .saved-ok{font-size:11px;color:#3B6D11;opacity:0;transition:opacity .3s;margin-left:6px}
+  .save-btn-primary{background:var(--brand-accent);color:#fff;border-color:var(--brand-accent);font-weight:600}
+  .save-btn-primary:hover{background:#e57209;opacity:1}
+  .save-btn-secondary{color:var(--brand-primary);border-color:var(--brand-primary)}
+  .save-btn-secondary:hover{background:#F5E3EC}
+  .saved-ok{font-size:11px;color:var(--brand-primary);opacity:0;transition:opacity .3s;margin-left:6px}
   .tab-bar{display:flex;gap:0;border-bottom:0.5px solid rgba(0,0,0,.12);margin-bottom:14px}
   .tab{padding:7px 14px;font-size:13px;cursor:pointer;color:#888780;border-bottom:2px solid transparent;margin-bottom:-1px}
-  .tab.active{color:#1a1a18;font-weight:500;border-bottom-color:#1a1a18}
+  .tab.active{color:var(--brand-primary);font-weight:600;border-bottom-color:var(--brand-primary)}
   .section-title{font-size:11px;font-weight:500;color:#888780;text-transform:uppercase;letter-spacing:.08em;margin:0 0 10px}
   .matrix-table{width:100%;border-collapse:collapse;font-size:13px}
   .matrix-table th{padding:8px 10px;font-weight:500;color:#888780;border-bottom:0.5px solid rgba(0,0,0,.12);text-align:center;font-size:12px}
@@ -80,6 +87,38 @@
   .cb-blue{background:#E6F1FB;color:#185FA5}.cb-pink{background:#FBEAF0;color:#993356}
   .funnel-note{font-size:11px;color:#b4b2a9;font-style:italic;margin-top:4px}
   .hero-box{background:#eeecea;border-radius:12px;padding:14px 18px;margin-bottom:16px}
+  .pgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:2px 0 8px}
+  .pgrid label{font-size:9.5px;color:#888780;display:block;margin-bottom:2px;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .pgrid input[type=number]{width:100%;padding:3px 2px;font-size:12px;text-align:center}
+  @media(prefers-color-scheme:dark){.pgrid label{color:#888780!important}}
+  .callout{background:#F5E3EC;border-radius:12px;padding:16px 18px;margin-bottom:14px;border-left:3px solid var(--brand-primary)}
+  @media(prefers-color-scheme:dark){.callout{background:#3a2030!important}}
+  .callout-label{font-size:11px;color:var(--brand-primary);text-transform:uppercase;letter-spacing:.06em;font-weight:500;margin-bottom:4px}
+  @media(prefers-color-scheme:dark){.callout-label{color:#e8a9c6!important}}
+  .callout-main{font-size:18px;font-weight:500;color:#1a1a18}
+  @media(prefers-color-scheme:dark){.callout-main{color:#e8e6df!important}}
+  .callout-sub{font-size:12px;color:var(--brand-primary);margin-top:3px}
+  @media(prefers-color-scheme:dark){.callout-sub{color:#e8a9c6!important}}
+  .rank-tag{display:inline-block;font-size:10px;font-weight:600;padding:1px 6px;border-radius:10px;margin-right:6px;min-width:14px;text-align:center}
+  .rank-1{background:#3B6D11;color:#fff}.rank-2{background:#888780;color:#fff}.rank-org{background:#D4537E;color:#fff}
+  #print-report{display:none}
+  @media print{
+    body>*:not(#print-report){display:none!important}
+    #print-report{display:block!important;padding:0;background:#fff;color:#111}
+    #print-report h1{font-size:20px;margin-bottom:2px}
+    #print-report .pr-date{font-size:12px;color:#666;margin-bottom:18px}
+    #print-report .pr-kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:20px}
+    #print-report .pr-kpi{border:1px solid #ddd;border-radius:8px;padding:10px}
+    #print-report .pr-kpi-label{font-size:10px;color:#666;margin-bottom:3px}
+    #print-report .pr-kpi-value{font-size:16px;font-weight:600}
+    #print-report .pr-callout{background:#F5E3EC;border-left:3px solid #971454;border-radius:8px;padding:12px 14px;margin-bottom:18px;font-size:14px}
+    #print-report h1{color:#971454}
+    #print-report table{width:100%;border-collapse:collapse;font-size:13px;margin-bottom:16px}
+    #print-report th{text-align:left;padding:6px 8px;border-bottom:1px solid #999;font-size:11px;color:#666}
+    #print-report td{padding:6px 8px;border-bottom:1px solid #eee}
+    #print-report .pr-section-title{font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:#666;margin:16px 0 6px}
+    #print-report .pr-foot{font-size:10px;color:#999;margin-top:24px}
+  }
 </style>
 </head>
 <body>
@@ -88,15 +127,15 @@
 
 <div class="month-bar">
   <span style="font-size:12px;color:#888780;margin-right:2px">Mes:</span>
-  <button class="month-btn active" onclick="setMonth(this,'2025-06')">Jun</button>
-  <button class="month-btn" onclick="setMonth(this,'2025-07')">Jul</button>
+  <button class="month-btn active" onclick="setMonth(this,'2025-07')">Jul</button>
   <button class="month-btn" onclick="setMonth(this,'2025-08')">Ago</button>
   <button class="month-btn" onclick="setMonth(this,'2025-09')">Sep</button>
   <button class="month-btn" onclick="setMonth(this,'2025-10')">Oct</button>
   <button class="month-btn" onclick="setMonth(this,'2025-11')">Nov</button>
   <button class="month-btn" onclick="setMonth(this,'2025-12')">Dic</button>
-  <button class="save-btn" onclick="saveData()">Guardar mes</button>
+  <button class="save-btn save-btn-primary" onclick="saveData()">Guardar mes</button>
   <span class="saved-ok" id="saved-ok">Guardado ✓</span>
+  <button class="save-btn save-btn-secondary" onclick="exportReport()" style="margin-left:6px"><i class="ti ti-file-download" style="margin-right:4px"></i>Exportar informe</button>
 </div>
 
 <div class="hero-box">
@@ -110,48 +149,108 @@
 </div>
 
 <div class="tab-bar">
-  <div class="tab active" onclick="showTab('campanas',this)">Campañas</div>
+  <div class="tab active" onclick="showTab('resumen',this)">Resumen</div>
+  <div class="tab" onclick="showTab('campanas',this)">Campañas</div>
   <div class="tab" onclick="showTab('organico',this)">Orgánico</div>
   <div class="tab" onclick="showTab('conversion',this)">Conversión</div>
   <div class="tab" onclick="showTab('valor',this)">Valor & ROI</div>
   <div class="tab" onclick="showTab('historico',this)">Histórico</div>
 </div>
 
+<!-- RESUMEN EJECUTIVO -->
+<div id="tab-resumen">
+  <div class="callout">
+    <div class="callout-label">Canal que mejor funciona este mes</div>
+    <div class="callout-main" id="rk-best-name">—</div>
+    <div class="callout-sub" id="rk-best-detail">Cargá datos de campañas e inscriptas para ver esta recomendación.</div>
+  </div>
+  <div class="block" style="margin-bottom:12px">
+    <div class="section-title">Resultado e inversión por canal</div>
+    <div style="overflow-x:auto">
+    <table class="matrix-table">
+      <thead>
+        <tr>
+          <th class="rh">Canal</th>
+          <th>Inversión</th>
+          <th>Inscriptas</th>
+          <th>Costo / inscripta</th>
+          <th>% del resultado</th>
+        </tr>
+      </thead>
+      <tbody id="rk-tbody">
+        <tr><td class="rh"><span class="pdot" style="background:#7F77DD"></span>META</td><td class="tc" id="rk-m-inv">—</td><td class="tc" id="rk-m-insc">—</td><td class="tc" id="rk-m-cpi">—</td><td class="tc" id="rk-m-pct">—</td></tr>
+        <tr><td class="rh"><span class="pdot" style="background:#3B6D11"></span>WhatsApp</td><td class="tc" id="rk-wa-inv">—</td><td class="tc" id="rk-wa-insc">—</td><td class="tc" id="rk-wa-cpi">—</td><td class="tc" id="rk-wa-pct">—</td></tr>
+        <tr><td class="rh"><span class="pdot" style="background:#378ADD"></span>Email</td><td class="tc" id="rk-em-inv">—</td><td class="tc" id="rk-em-insc">—</td><td class="tc" id="rk-em-cpi">—</td><td class="tc" id="rk-em-pct">—</td></tr>
+        <tr><td class="rh"><span class="pdot" style="background:#D4537E"></span>Orgánico</td><td class="tc">$0</td><td class="tc" id="rk-org-insc">—</td><td class="tc">$0</td><td class="tc" id="rk-org-pct">—</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <div class="funnel-note" style="margin-top:10px" id="rk-lm-note">Lead magnets (E-book + Clase gratuita) no se cuentan como canal propio: generan leads que luego se inscriben por META, WhatsApp, Email u Orgánico.</div>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px">
+    <div class="block">
+      <div class="section-title">Resultado del mes</div>
+      <div class="kpi-row"><span class="kpi-name">Valor generado (LTV inscriptas)</span><span class="kpi-val" id="rk-val-total">—</span></div>
+      <div class="kpi-row"><span class="kpi-name">Inversión de marketing</span><span class="kpi-val" id="rk-val-inv">—</span></div>
+      <div class="kpi-row" style="padding-top:8px;margin-top:2px;border-top:0.5px solid rgba(0,0,0,.12)"><span style="font-size:13px;font-weight:500">ROI</span><span style="font-size:16px;font-weight:500" id="rk-val-roi">—</span></div>
+      <div class="funnel-note" style="margin-top:6px">Ver supuestos de precio y LTV en la pestaña Valor & ROI.</div>
+    </div>
+    <div class="block">
+      <div class="section-title">Evolución reciente</div>
+      <div id="rk-historico-mini" style="font-size:13px;color:#888780">Guardá datos de más de un mes para ver la tendencia acá.</div>
+    </div>
+  </div>
+  <div class="block" style="margin-top:12px">
+    <div class="section-title">Comentarios del mes</div>
+    <textarea id="comentarios" placeholder="Notas, contexto o hallazgos del mes para agregar al informe (ej: se lanzó nueva campaña, cambio de precios, etc.)" style="width:100%;min-height:70px;padding:8px 10px;font-size:13px;font-family:inherit;border:0.5px solid rgba(0,0,0,.2);border-radius:8px;background:#fff;color:#1a1a18;resize:vertical" onchange="recalc()"></textarea>
+  </div>
+</div>
+
 <!-- CAMPAÑAS -->
-<div id="tab-campanas">
+<div id="tab-campanas" style="display:none">
   <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px">
     <div class="block">
       <div style="display:flex;align-items:center;gap:9px;margin-bottom:12px">
         <div class="camp-icon icon-purple"><i class="ti ti-brand-whatsapp"></i></div>
-        <div><div class="camp-title">META Mensajes</div><div class="camp-sub"><span class="status-dot dot-green"></span>Activa · Salud</div></div>
+        <div class="camp-title">META Mensajes</div>
       </div>
-      <div class="erow"><span class="kpi-name">Chats reportados por META</span><input type="number" id="m-chats" value="5" min="0" onchange="recalc()"></div>
+      <div class="erow"><span class="kpi-name">Chats reportados por META</span><input type="number" id="m-chats" placeholder="—" min="0" onchange="recalc()"></div>
       <div class="erow"><span class="kpi-name">Mensajes reales recibidos</span><input type="number" id="m-real" placeholder="—" min="0" onchange="recalc()"></div>
-      <div class="erow"><span class="kpi-name">Invertido ($)</span><input type="number" id="m-inv" value="15" min="0" onchange="recalc()"></div>
+      <div class="erow"><span class="kpi-name">Invertido ($)</span><input type="number" id="m-inv" placeholder="—" min="0" onchange="recalc()"></div>
       <div style="margin-top:8px;padding-top:8px;border-top:0.5px solid rgba(0,0,0,.08)">
+        <div class="kpi-name" style="margin-bottom:4px">Inscriptas por producto</div>
+        <div class="pgrid">
+          <div><label>Regular</label><input type="number" id="x-reg-m" placeholder="—" min="0" onchange="recalc()"></div>
+          <div><label>Acelerado</label><input type="number" id="x-ace-m" placeholder="—" min="0" onchange="recalc()"></div>
+          <div><label>Membresía</label><input type="number" id="x-mem-m" placeholder="—" min="0" onchange="recalc()"></div>
+          <div><label>Diplomat.</label><input type="number" id="x-dip-m" placeholder="—" min="0" onchange="recalc()"></div>
+        </div>
         <div class="kpi-row"><span class="kpi-name">Costo por chat META</span><span class="kpi-val" id="m-cpc">—</span></div>
         <div class="kpi-row"><span class="kpi-name">Costo por mensaje real</span><span class="kpi-val" id="m-cpm">—</span></div>
         <div class="kpi-row"><span class="kpi-name">% diferencia META vs real</span><span class="kpi-val" id="m-diff">—</span></div>
+        <div class="kpi-row" style="margin-top:4px;padding-top:6px;border-top:0.5px solid rgba(0,0,0,.08)"><span class="kpi-name">Total inscriptas</span><span class="kpi-val" id="m-insc-total">—</span></div>
+        <div class="kpi-row"><span class="kpi-name">Costo por inscripta</span><span class="kpi-val" id="m-cpi-canal">—</span></div>
+        <div class="kpi-row"><span class="kpi-name">Valor generado (LTV)</span><span class="kpi-val" id="m-val-total">—</span></div>
+        <div class="kpi-row"><span style="font-size:13px;font-weight:500">ROI del canal</span><span class="kpi-val" style="font-weight:500" id="m-roi">—</span></div>
       </div>
     </div>
     <div class="block">
       <div style="display:flex;align-items:center;gap:9px;margin-bottom:12px">
         <div class="camp-icon icon-teal"><i class="ti ti-book"></i></div>
-        <div><div class="camp-title">E-book Lead Magnet</div><div class="camp-sub"><span class="status-dot dot-yellow"></span>Activa · revisar landing</div></div>
+        <div class="camp-title">E-book Lead Magnet</div>
       </div>
-      <div class="erow"><span class="kpi-name">Visitas a la página</span><input type="number" id="e-visits" value="187" min="0" onchange="recalc()"></div>
-      <div class="erow"><span class="kpi-name">Leads captados</span><input type="number" id="e-leads" value="2" min="0" onchange="recalc()"></div>
-      <div class="erow"><span class="kpi-name">Invertido ($)</span><input type="number" id="e-inv" value="14" min="0" onchange="recalc()"></div>
+      <div class="erow"><span class="kpi-name">Visitas a la página</span><input type="number" id="e-visits" placeholder="—" min="0" onchange="recalc()"></div>
+      <div class="erow"><span class="kpi-name">Leads captados</span><input type="number" id="e-leads" placeholder="—" min="0" onchange="recalc()"></div>
+      <div class="erow"><span class="kpi-name">Invertido ($)</span><input type="number" id="e-inv" placeholder="—" min="0" onchange="recalc()"></div>
       <div style="margin-top:8px;padding-top:8px;border-top:0.5px solid rgba(0,0,0,.08)">
         <div class="kpi-row"><span class="kpi-name">Tasa conv. visita → lead</span><span class="kpi-val" id="e-cvr">—</span></div>
         <div class="kpi-row"><span class="kpi-name">CPL (costo por lead)</span><span class="kpi-val" id="e-cpl">—</span></div>
-        <div class="kpi-row"><span class="kpi-name">Estado landing</span><span><span class="badge badge-warn">Mejorar</span></span></div>
       </div>
     </div>
     <div class="block">
       <div style="display:flex;align-items:center;gap:9px;margin-bottom:12px">
         <div class="camp-icon icon-amber"><i class="ti ti-video"></i></div>
-        <div><div class="camp-title">Clase gratuita grabada</div><div class="camp-sub"><span class="status-dot dot-gray"></span>Por lanzar</div></div>
+        <div class="camp-title">Clase gratuita grabada</div>
       </div>
       <div class="erow"><span class="kpi-name">Visitas a la página</span><input type="number" id="c-visits" placeholder="—" min="0" onchange="recalc()"></div>
       <div class="erow"><span class="kpi-name">Registros / leads</span><input type="number" id="c-leads" placeholder="—" min="0" onchange="recalc()"></div>
@@ -164,28 +263,50 @@
     <div class="block">
       <div style="display:flex;align-items:center;gap:9px;margin-bottom:12px">
         <div class="camp-icon icon-blue"><i class="ti ti-mail"></i></div>
-        <div><div class="camp-title">Email marketing</div><div class="camp-sub"><span class="status-dot dot-gray"></span>Cierres</div></div>
+        <div class="camp-title">Email marketing</div>
       </div>
       <div class="erow"><span class="kpi-name">Emails enviados</span><input type="number" id="em-sent" placeholder="—" min="0" onchange="recalc()"></div>
       <div class="erow"><span class="kpi-name">Aperturas</span><input type="number" id="em-open" placeholder="—" min="0" onchange="recalc()"></div>
       <div class="erow"><span class="kpi-name">Clics</span><input type="number" id="em-click" placeholder="—" min="0" onchange="recalc()"></div>
       <div class="erow"><span class="kpi-name">Invertido ($)</span><input type="number" id="em-inv" placeholder="—" min="0" onchange="recalc()"></div>
       <div style="margin-top:8px;padding-top:8px;border-top:0.5px solid rgba(0,0,0,.08)">
+        <div class="kpi-name" style="margin-bottom:4px">Inscriptas por producto</div>
+        <div class="pgrid">
+          <div><label>Regular</label><input type="number" id="x-reg-em" placeholder="—" min="0" onchange="recalc()"></div>
+          <div><label>Acelerado</label><input type="number" id="x-ace-em" placeholder="—" min="0" onchange="recalc()"></div>
+          <div><label>Membresía</label><input type="number" id="x-mem-em" placeholder="—" min="0" onchange="recalc()"></div>
+          <div><label>Diplomat.</label><input type="number" id="x-dip-em" placeholder="—" min="0" onchange="recalc()"></div>
+        </div>
         <div class="kpi-row"><span class="kpi-name">Tasa apertura</span><span class="kpi-val" id="em-open-rate">—</span></div>
         <div class="kpi-row"><span class="kpi-name">Tasa de clic (CTR)</span><span class="kpi-val" id="em-ctr">—</span></div>
+        <div class="kpi-row" style="margin-top:4px;padding-top:6px;border-top:0.5px solid rgba(0,0,0,.08)"><span class="kpi-name">Total inscriptas</span><span class="kpi-val" id="em-insc-total">—</span></div>
+        <div class="kpi-row"><span class="kpi-name">Costo por inscripta</span><span class="kpi-val" id="em-cpi-canal">—</span></div>
+        <div class="kpi-row"><span class="kpi-name">Valor generado (LTV)</span><span class="kpi-val" id="em-val-total">—</span></div>
+        <div class="kpi-row"><span style="font-size:13px;font-weight:500">ROI del canal</span><span class="kpi-val" style="font-weight:500" id="em-roi">—</span></div>
       </div>
     </div>
     <div class="block">
       <div style="display:flex;align-items:center;gap:9px;margin-bottom:12px">
         <div class="camp-icon icon-green"><i class="ti ti-brand-whatsapp"></i></div>
-        <div><div class="camp-title">WhatsApp puntual</div><div class="camp-sub"><span class="status-dot dot-gray"></span>Campañas ocasionales</div></div>
+        <div class="camp-title">WhatsApp puntual</div>
       </div>
       <div class="erow"><span class="kpi-name">Mensajes enviados</span><input type="number" id="wa-sent" placeholder="—" min="0" onchange="recalc()"></div>
       <div class="erow"><span class="kpi-name">Respuestas recibidas</span><input type="number" id="wa-resp" placeholder="—" min="0" onchange="recalc()"></div>
       <div class="erow"><span class="kpi-name">Invertido ($)</span><input type="number" id="wa-inv" placeholder="—" min="0" onchange="recalc()"></div>
       <div style="margin-top:8px;padding-top:8px;border-top:0.5px solid rgba(0,0,0,.08)">
+        <div class="kpi-name" style="margin-bottom:4px">Inscriptas por producto</div>
+        <div class="pgrid">
+          <div><label>Regular</label><input type="number" id="x-reg-wa" placeholder="—" min="0" onchange="recalc()"></div>
+          <div><label>Acelerado</label><input type="number" id="x-ace-wa" placeholder="—" min="0" onchange="recalc()"></div>
+          <div><label>Membresía</label><input type="number" id="x-mem-wa" placeholder="—" min="0" onchange="recalc()"></div>
+          <div><label>Diplomat.</label><input type="number" id="x-dip-wa" placeholder="—" min="0" onchange="recalc()"></div>
+        </div>
         <div class="kpi-row"><span class="kpi-name">Tasa de respuesta</span><span class="kpi-val" id="wa-rate">—</span></div>
         <div class="kpi-row"><span class="kpi-name">Costo por respuesta</span><span class="kpi-val" id="wa-cpr">—</span></div>
+        <div class="kpi-row" style="margin-top:4px;padding-top:6px;border-top:0.5px solid rgba(0,0,0,.08)"><span class="kpi-name">Total inscriptas</span><span class="kpi-val" id="wa-insc-total">—</span></div>
+        <div class="kpi-row"><span class="kpi-name">Costo por inscripta</span><span class="kpi-val" id="wa-cpi-canal">—</span></div>
+        <div class="kpi-row"><span class="kpi-name">Valor generado (LTV)</span><span class="kpi-val" id="wa-val-total">—</span></div>
+        <div class="kpi-row"><span style="font-size:13px;font-weight:500">ROI del canal</span><span class="kpi-val" style="font-weight:500" id="wa-roi">—</span></div>
       </div>
     </div>
     <div class="block" style="border-color:rgba(0,0,0,.2)">
@@ -266,7 +387,7 @@
 <div id="tab-conversion" style="display:none">
   <div class="block" style="margin-bottom:14px">
     <div style="font-size:13px;font-weight:500;margin-bottom:2px">Inscriptas por canal y producto</div>
-    <div class="funnel-note" style="margin-bottom:14px">E-book y clase operan como lead magnets. La conversión ocurre por META, WhatsApp, Email u Orgánico.</div>
+    <div class="funnel-note" style="margin-bottom:14px">META, WhatsApp y Email se cargan en la pestaña Campañas. Acá solo se edita Orgánico; el resto es de solo lectura.</div>
     <div style="overflow-x:auto">
     <table class="matrix-table">
       <thead>
@@ -282,33 +403,33 @@
       <tbody>
         <tr>
           <td class="rh"><span class="pdot" style="background:#7F77DD"></span>Formación Regular</td>
-          <td style="text-align:center"><input type="number" id="x-reg-m" placeholder="—" min="0" onchange="recalc()"></td>
-          <td style="text-align:center"><input type="number" id="x-reg-wa" placeholder="—" min="0" onchange="recalc()"></td>
-          <td style="text-align:center"><input type="number" id="x-reg-em" placeholder="—" min="0" onchange="recalc()"></td>
+          <td class="tc" id="d-reg-m">—</td>
+          <td class="tc" id="d-reg-wa">—</td>
+          <td class="tc" id="d-reg-em">—</td>
           <td style="text-align:center"><input type="number" id="x-reg-org" placeholder="—" min="0" onchange="recalc()"></td>
           <td class="tc" id="xt-reg">—</td>
         </tr>
         <tr>
           <td class="rh"><span class="pdot" style="background:#1D9E75"></span>Acelerado</td>
-          <td style="text-align:center"><input type="number" id="x-ace-m" placeholder="—" min="0" onchange="recalc()"></td>
-          <td style="text-align:center"><input type="number" id="x-ace-wa" placeholder="—" min="0" onchange="recalc()"></td>
-          <td style="text-align:center"><input type="number" id="x-ace-em" placeholder="—" min="0" onchange="recalc()"></td>
+          <td class="tc" id="d-ace-m">—</td>
+          <td class="tc" id="d-ace-wa">—</td>
+          <td class="tc" id="d-ace-em">—</td>
           <td style="text-align:center"><input type="number" id="x-ace-org" placeholder="—" min="0" onchange="recalc()"></td>
           <td class="tc" id="xt-ace">—</td>
         </tr>
         <tr>
           <td class="rh"><span class="pdot" style="background:#EF9F27"></span>Membresía</td>
-          <td style="text-align:center"><input type="number" id="x-mem-m" placeholder="—" min="0" onchange="recalc()"></td>
-          <td style="text-align:center"><input type="number" id="x-mem-wa" placeholder="—" min="0" onchange="recalc()"></td>
-          <td style="text-align:center"><input type="number" id="x-mem-em" placeholder="—" min="0" onchange="recalc()"></td>
+          <td class="tc" id="d-mem-m">—</td>
+          <td class="tc" id="d-mem-wa">—</td>
+          <td class="tc" id="d-mem-em">—</td>
           <td style="text-align:center"><input type="number" id="x-mem-org" placeholder="—" min="0" onchange="recalc()"></td>
           <td class="tc" id="xt-mem">—</td>
         </tr>
         <tr>
           <td class="rh"><span class="pdot" style="background:#D85A30"></span>Diplomatura</td>
-          <td style="text-align:center"><input type="number" id="x-dip-m" placeholder="—" min="0" onchange="recalc()"></td>
-          <td style="text-align:center"><input type="number" id="x-dip-wa" placeholder="—" min="0" onchange="recalc()"></td>
-          <td style="text-align:center"><input type="number" id="x-dip-em" placeholder="—" min="0" onchange="recalc()"></td>
+          <td class="tc" id="d-dip-m">—</td>
+          <td class="tc" id="d-dip-wa">—</td>
+          <td class="tc" id="d-dip-em">—</td>
           <td style="text-align:center"><input type="number" id="x-dip-org" placeholder="—" min="0" onchange="recalc()"></td>
           <td class="tc" id="xt-dip">—</td>
         </tr>
@@ -434,14 +555,16 @@
 </div>
 
 </div>
+<div id="print-report"></div>
 <script>
-var currentMonth='2025-06',SK='tablero_mkt_v7';
-var FIELDS=['m-chats','m-real','m-inv','e-visits','e-leads','e-inv','c-visits','c-leads','c-inv','em-sent','em-open','em-click','em-inv','wa-sent','wa-resp','wa-inv','org-ig-dms','org-ig-leads','org-ig-insc','org-wa-dms','org-wa-leads','org-wa-insc','org-ni-insc','x-reg-m','x-reg-wa','x-reg-em','x-reg-org','x-ace-m','x-ace-wa','x-ace-em','x-ace-org','x-mem-m','x-mem-wa','x-mem-em','x-mem-org','x-dip-m','x-dip-wa','x-dip-em','x-dip-org'];
+var currentMonth='2025-07',SK='tablero_mkt_v7';
+var MONTH_NAMES={'2025-07':'Julio','2025-08':'Agosto','2025-09':'Septiembre','2025-10':'Octubre','2025-11':'Noviembre','2025-12':'Diciembre'};
+var FIELDS=['m-chats','m-real','m-inv','e-visits','e-leads','e-inv','c-visits','c-leads','c-inv','em-sent','em-open','em-click','em-inv','wa-sent','wa-resp','wa-inv','org-ig-dms','org-ig-leads','org-ig-insc','org-wa-dms','org-wa-leads','org-wa-insc','org-ni-insc','x-reg-m','x-reg-wa','x-reg-em','x-reg-org','x-ace-m','x-ace-wa','x-ace-em','x-ace-org','x-mem-m','x-mem-wa','x-mem-em','x-mem-org','x-dip-m','x-dip-wa','x-dip-em','x-dip-org','comentarios'];
 function loadAll(){try{return JSON.parse(localStorage.getItem(SK)||'{}')}catch(e){return{}}}
 function saveData(){var all=loadAll(),d={};FIELDS.forEach(function(id){var el=document.getElementById(id);d[id]=el?el.value:''});all[currentMonth]=d;localStorage.setItem(SK,JSON.stringify(all));var f=document.getElementById('saved-ok');f.style.opacity='1';setTimeout(function(){f.style.opacity='0'},1800);renderHistorico()}
 function loadMonth(m){var all=loadAll(),d=all[m]||{};FIELDS.forEach(function(id){var el=document.getElementById(id);if(el)el.value=d[id]||''});recalc()}
 function setMonth(btn,m){document.querySelectorAll('.month-btn').forEach(function(b){b.classList.remove('active')});btn.classList.add('active');currentMonth=m;loadMonth(m)}
-function showTab(name,el){['campanas','organico','conversion','valor','historico'].forEach(function(t){document.getElementById('tab-'+t).style.display='none'});document.getElementById('tab-'+name).style.display='';document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('active')});el.classList.add('active')}
+function showTab(name,el){['resumen','campanas','organico','conversion','valor','historico'].forEach(function(t){document.getElementById('tab-'+t).style.display='none'});document.getElementById('tab-'+name).style.display='';document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('active')});el.classList.add('active')}
 var CK='tablero_mkt_config';
 var CONFIG_FIELDS=['tc','p-reg','p-ace','p-dip','p-mem','pct-dip','pct-mem','mo-mem'];
 function loadConfig(){var c=JSON.parse(localStorage.getItem(CK)||'{}');CONFIG_FIELDS.forEach(function(id){var el=document.getElementById(id);if(el&&c[id]!==undefined)el.value=c[id]});}
@@ -473,8 +596,13 @@ function recalc(){
   set('org-wa-cvr',(orgWaDMs&&orgWaInsc)?pct(orgWaInsc/orgWaDMs):'—');
   var prods=['reg','ace','mem','dip'],chans=['m','wa','em','org'];
   var rowT={},colT={m:0,wa:0,em:0,org:0},grand=0;
-  prods.forEach(function(p){var t=0;chans.forEach(function(ch){var v=nn('x-'+p+'-'+ch);t+=v;colT[ch]+=v});rowT[p]=t;grand+=t;set('xt-'+p,t||'—')});
+  var chanProd={m:{},wa:{},em:{},org:{}};
+  prods.forEach(function(p){var t=0;chans.forEach(function(ch){var v=nn('x-'+p+'-'+ch);t+=v;colT[ch]+=v;chanProd[ch][p]=v;if(ch!=='org'){set('d-'+p+'-'+ch,v||'—')}});rowT[p]=t;grand+=t;set('xt-'+p,t||'—')});
   chans.forEach(function(ch){set('xc-'+ch,colT[ch]||'—')});set('xc-total',grand||'—');
+  set('m-insc-total',colT.m||'—');set('wa-insc-total',colT.wa||'—');set('em-insc-total',colT.em||'—');
+  set('m-cpi-canal',colT.m>0?(mI>0?fmt(mI/colT.m,'$'):'$0'):'—');
+  set('wa-cpi-canal',colT.wa>0?(waI>0?fmt(waI/colT.wa,'$'):'$0'):'—');
+  set('em-cpi-canal',colT.em>0?(emI>0?fmt(emI/colT.em,'$'):'$0'):'—');
   var inscPago=colT.m+colT.wa+colT.em,inscOrg=colT.org;
   set('org-pct',grand>0?pct(inscOrg/grand):'—');
   set('org-total-insc',inscOrg||'—');set('pago-total-insc',inscPago||'—');
@@ -519,12 +647,62 @@ function recalc(){
   var roi=(vTotal>0&&totalInv>0)?((vTotal-totalInv)/totalInv*100):null;
   var roiEl=document.getElementById('val-roi');
   if(roiEl){roiEl.textContent=roi!==null?Math.round(roi).toLocaleString('es-AR')+'x':'—';roiEl.style.color=roi>0?'#3B6D11':'#993356';}
+
+  // ROI por canal — mismo LTV por producto, aplicado a las inscriptas de cada canal
+  var chanInvMap={m:mI,wa:waI,em:emI};
+  ['m','wa','em'].forEach(function(ch){
+    var cp=chanProd[ch];
+    var chVal=(cp.reg||0)*ltvReg+(cp.ace||0)*ltvAce+(cp.dip||0)*ltvDip+(cp.mem||0)*ltvMem;
+    var chInv=chanInvMap[ch];
+    set(ch+'-val-total',usd(chVal));
+    var chRoi=(chVal>0&&chInv>0)?((chVal-chInv)/chInv*100):null;
+    var chRoiEl=document.getElementById(ch+'-roi');
+    if(chRoiEl){chRoiEl.textContent=chRoi!==null?Math.round(chRoi).toLocaleString('es-AR')+'x':'—';chRoiEl.style.color=chRoi>0?'#3B6D11':'#993356';}
+  });
+
+  // Resumen ejecutivo — ranking de canales
+  var rkRows=[{key:'m',label:'META',inv:mI,insc:colT.m},{key:'wa',label:'WhatsApp',inv:waI,insc:colT.wa},{key:'em',label:'Email',inv:emI,insc:colT.em}];
+  rkRows.forEach(function(r){
+    set('rk-'+r.key+'-inv','$'+r.inv);
+    set('rk-'+r.key+'-insc',r.insc||'—');
+    set('rk-'+r.key+'-cpi',r.insc>0?(r.inv>0?fmt(r.inv/r.insc,'$'):'$0'):'—');
+    set('rk-'+r.key+'-pct',grand>0?pct(r.insc/grand):'—');
+  });
+  set('rk-org-insc',colT.org||'—');
+  set('rk-org-pct',grand>0?pct(colT.org/grand):'—');
+  var lmInv=eI+cI;
+  set('rk-lm-note','Lead magnets (E-book + Clase gratuita) invirtieron $'+lmInv+' este mes. No se cuentan como canal propio: generan leads que luego se inscriben por META, WhatsApp, Email u Orgánico.');
+  var best=null;
+  rkRows.forEach(function(r){
+    if(r.insc>0){
+      var cpi=r.inv>0?r.inv/r.insc:0;
+      if(best===null||cpi<best.cpi){best={label:r.label,cpi:cpi,insc:r.insc}}
+    }
+  });
+  var bestNameEl=document.getElementById('rk-best-name'),bestDetEl=document.getElementById('rk-best-detail');
+  if(best){
+    bestNameEl.textContent=best.label;
+    var detail=best.cpi>0?(fmt(best.cpi,'$')+' por inscripta · '+best.insc+' inscriptas este mes'):(best.insc+' inscriptas sin costo directo asignado');
+    if(colT.org>0){detail+=' · Orgánico sumó '+colT.org+' inscriptas sin inversión'}
+    bestDetEl.textContent=detail;
+  } else if(colT.org>0){
+    bestNameEl.textContent='Orgánico';
+    bestDetEl.textContent=colT.org+' inscriptas sin inversión — ningún canal pago tiene datos cargados este mes.';
+  } else {
+    bestNameEl.textContent='—';
+    bestDetEl.textContent='Cargá datos de campañas e inscriptas para ver esta recomendación.';
+  }
+  var valTotalTxt=document.getElementById('val-total')?document.getElementById('val-total').textContent:'—';
+  var valInvTxt=document.getElementById('val-inv')?document.getElementById('val-inv').textContent:'—';
+  set('rk-val-total',valTotalTxt);set('rk-val-inv',valInvTxt);
+  var rkValRoiEl=document.getElementById('rk-val-roi');
+  if(rkValRoiEl&&roiEl){rkValRoiEl.textContent=roiEl.textContent;rkValRoiEl.style.color=roiEl.style.color}
 }
 function renderHistorico(){
   var all=loadAll();
-  var months=['2025-06','2025-07','2025-08','2025-09','2025-10','2025-11','2025-12'].filter(function(m){return all[m]});
-  if(!months.length){set('historico-content','Guardá datos de cada mes para ver el histórico aquí.');return}
-  var names={'2025-06':'Jun','2025-07':'Jul','2025-08':'Ago','2025-09':'Sep','2025-10':'Oct','2025-11':'Nov','2025-12':'Dic'};
+  var months=['2025-07','2025-08','2025-09','2025-10','2025-11','2025-12'].filter(function(m){return all[m]});
+  if(!months.length){set('historico-content','Guardá datos de cada mes para ver el histórico aquí.');set('rk-historico-mini','Guardá datos de más de un mes para ver la tendencia acá.');return}
+  var names={'2025-07':'Jul','2025-08':'Ago','2025-09':'Sep','2025-10':'Oct','2025-11':'Nov','2025-12':'Dic'};
   var html='<div style="overflow-x:auto"><table style="width:100%;font-size:12px;border-collapse:collapse">';
   html+='<tr style="border-bottom:0.5px solid rgba(0,0,0,.12)"><th style="text-align:left;padding:6px 8px;font-weight:500;color:#888780">Mes</th><th style="text-align:right;padding:6px 8px;font-weight:500;color:#888780">Inscriptas</th><th style="text-align:right;padding:6px 8px;font-weight:500;color:#888780">Pago</th><th style="text-align:right;padding:6px 8px;font-weight:500;color:#888780">Orgánico</th><th style="text-align:right;padding:6px 8px;font-weight:500;color:#888780">% Org.</th><th style="text-align:right;padding:6px 8px;font-weight:500;color:#888780">Inversión</th><th style="text-align:right;padding:6px 8px;font-weight:500;color:#888780">$/inscripta pago</th></tr>';
   months.forEach(function(m){
@@ -539,7 +717,52 @@ function renderHistorico(){
   });
   html+='</table></div>';
   document.getElementById('historico-content').innerHTML=html;
+  document.getElementById('rk-historico-mini').innerHTML=html;
 }
+function exportReport(){
+  var monthLabel=MONTH_NAMES[currentMonth]||currentMonth;
+  var today=new Date().toLocaleDateString('es-AR');
+  var rows=[
+    {label:'META',inv:document.getElementById('rk-m-inv').textContent,insc:document.getElementById('rk-m-insc').textContent,cpi:document.getElementById('rk-m-cpi').textContent},
+    {label:'WhatsApp',inv:document.getElementById('rk-wa-inv').textContent,insc:document.getElementById('rk-wa-insc').textContent,cpi:document.getElementById('rk-wa-cpi').textContent},
+    {label:'Email',inv:document.getElementById('rk-em-inv').textContent,insc:document.getElementById('rk-em-insc').textContent,cpi:document.getElementById('rk-em-cpi').textContent},
+    {label:'Orgánico',inv:'$0',insc:document.getElementById('rk-org-insc').textContent,cpi:'$0'}
+  ];
+  var tableRows=rows.map(function(r){return '<tr><td>'+r.label+'</td><td>'+r.inv+'</td><td>'+r.insc+'</td><td>'+r.cpi+'</td></tr>'}).join('');
+  var html='';
+  html+='<h1>Informe de Marketing — '+monthLabel+'</h1>';
+  html+='<div class="pr-date">Generado el '+today+'</div>';
+  html+='<div class="pr-kpis">';
+  html+='<div class="pr-kpi"><div class="pr-kpi-label">Leads totales</div><div class="pr-kpi-value">'+document.getElementById('h-leads').textContent+'</div></div>';
+  html+='<div class="pr-kpi"><div class="pr-kpi-label">Inscriptas nuevas</div><div class="pr-kpi-value">'+document.getElementById('h-inscriptas').textContent+'</div></div>';
+  html+='<div class="pr-kpi"><div class="pr-kpi-label">% Conversión</div><div class="pr-kpi-value">'+document.getElementById('h-cvr').textContent+'</div></div>';
+  html+='<div class="pr-kpi"><div class="pr-kpi-label">Inversión total</div><div class="pr-kpi-value">'+document.getElementById('h-inv').textContent+'</div></div>';
+  html+='<div class="pr-kpi"><div class="pr-kpi-label">Costo por inscripta</div><div class="pr-kpi-value">'+document.getElementById('h-cpi').textContent+'</div></div>';
+  html+='</div>';
+  html+='<div class="pr-callout"><strong>Canal que mejor funcionó: '+document.getElementById('rk-best-name').textContent+'.</strong> '+document.getElementById('rk-best-detail').textContent+'</div>';
+  html+='<div class="pr-section-title">Resultado e inversión por canal</div>';
+  html+='<table><tr><th>Canal</th><th>Inversión</th><th>Inscriptas</th><th>Costo / inscripta</th></tr>'+tableRows+'</table>';
+  html+='<div class="pr-section-title">Valor generado y ROI</div>';
+  html+='<table><tr><th>Valor generado (LTV)</th><th>Inversión</th><th>ROI</th></tr><tr><td>'+document.getElementById('rk-val-total').textContent+'</td><td>'+document.getElementById('rk-val-inv').textContent+'</td><td>'+document.getElementById('rk-val-roi').textContent+'</td></tr></table>';
+  var comentarios=(document.getElementById('comentarios').value||'').trim();
+  if(comentarios){
+    var esc=document.createElement('div');esc.textContent=comentarios;
+    html+='<div class="pr-section-title">Comentarios</div>';
+    html+='<div style="font-size:13px;white-space:pre-wrap;margin-bottom:16px">'+esc.innerHTML+'</div>';
+  }
+  html+='<div class="pr-foot">Tablero de Marketing · informe generado automáticamente</div>';
+  document.getElementById('print-report').innerHTML=html;
+  window.print();
+}
+var JULY_SEED={'m-chats':'1173','m-inv':'303','x-reg-m':'35','e-visits':'716','e-leads':'78','e-inv':'41','c-visits':'166','c-leads':'86','c-inv':'0','em-sent':'63000','em-open':'5688','em-click':'350','em-inv':'382','x-reg-em':'6','x-reg-wa':'7','x-mem-org':'10','x-dip-org':'4'};
+function seedJulyIfMissing(){
+  var all=loadAll();
+  if(!all['2025-07']){
+    all['2025-07']=JULY_SEED;
+    localStorage.setItem(SK,JSON.stringify(all));
+  }
+}
+seedJulyIfMissing();
 loadMonth(currentMonth);loadConfig();renderHistorico();
 </script>
 </body>
