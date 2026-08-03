@@ -124,6 +124,7 @@
 <body>
 <div class="container">
 <h1>Tablero de Marketing</h1>
+<div id="load-status" style="font-size:12px;color:#888780;margin-bottom:12px">Cargando datos compartidos…</div>
 
 <div class="month-bar">
   <span style="font-size:12px;color:#888780;margin-right:2px">Mes:</span>
@@ -557,18 +558,29 @@
 </div>
 <div id="print-report"></div>
 <script>
-var currentMonth='2025-07',SK='tablero_mkt_v7';
+var currentMonth='2025-07';
 var MONTH_NAMES={'2025-07':'Julio','2025-08':'Agosto','2025-09':'Septiembre','2025-10':'Octubre','2025-11':'Noviembre','2025-12':'Diciembre'};
 var FIELDS=['m-chats','m-real','m-inv','e-visits','e-leads','e-inv','c-visits','c-leads','c-inv','em-sent','em-open','em-click','em-inv','wa-sent','wa-resp','wa-inv','org-ig-dms','org-ig-leads','org-ig-insc','org-wa-dms','org-wa-leads','org-wa-insc','org-ni-insc','x-reg-m','x-reg-wa','x-reg-em','x-reg-org','x-ace-m','x-ace-wa','x-ace-em','x-ace-org','x-mem-m','x-mem-wa','x-mem-em','x-mem-org','x-dip-m','x-dip-wa','x-dip-em','x-dip-org','comentarios'];
-function loadAll(){try{return JSON.parse(localStorage.getItem(SK)||'{}')}catch(e){return{}}}
-function saveData(){var all=loadAll(),d={};FIELDS.forEach(function(id){var el=document.getElementById(id);d[id]=el?el.value:''});all[currentMonth]=d;localStorage.setItem(SK,JSON.stringify(all));var f=document.getElementById('saved-ok');f.style.opacity='1';setTimeout(function(){f.style.opacity='0'},1800);renderHistorico()}
-function loadMonth(m){var all=loadAll(),d=all[m]||{};FIELDS.forEach(function(id){var el=document.getElementById(id);if(el)el.value=d[id]||''});recalc()}
+var CONFIG_FIELDS=['tc','p-reg','p-ace','p-dip','p-mem','pct-dip','pct-mem','mo-mem'];
+var REMOTE={months:{},config:{}};
+function postRemote(){return fetch('/api/data',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(REMOTE)}).then(function(r){if(!r.ok)throw new Error('save failed')})}
+function saveData(){
+  var d={};FIELDS.forEach(function(id){var el=document.getElementById(id);d[id]=el?el.value:''});
+  REMOTE.months[currentMonth]=d;
+  var f=document.getElementById('saved-ok');
+  f.textContent='Guardando…';f.style.color='';f.style.opacity='1';
+  postRemote().then(function(){
+    f.textContent='Guardado ✓';setTimeout(function(){f.style.opacity='0'},1800);
+  }).catch(function(){
+    f.textContent='Error al guardar — reintentá';f.style.color='#993356';
+  });
+  renderHistorico();
+}
+function loadMonth(m){var d=(REMOTE.months||{})[m]||{};FIELDS.forEach(function(id){var el=document.getElementById(id);if(el)el.value=d[id]||''});recalc()}
 function setMonth(btn,m){document.querySelectorAll('.month-btn').forEach(function(b){b.classList.remove('active')});btn.classList.add('active');currentMonth=m;loadMonth(m)}
 function showTab(name,el){['resumen','campanas','organico','conversion','valor','historico'].forEach(function(t){document.getElementById('tab-'+t).style.display='none'});document.getElementById('tab-'+name).style.display='';document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('active')});el.classList.add('active')}
-var CK='tablero_mkt_config';
-var CONFIG_FIELDS=['tc','p-reg','p-ace','p-dip','p-mem','pct-dip','pct-mem','mo-mem'];
-function loadConfig(){var c=JSON.parse(localStorage.getItem(CK)||'{}');CONFIG_FIELDS.forEach(function(id){var el=document.getElementById(id);if(el&&c[id]!==undefined)el.value=c[id]});}
-function saveConfig(){var c={};CONFIG_FIELDS.forEach(function(id){var el=document.getElementById(id);if(el)c[id]=el.value});localStorage.setItem(CK,JSON.stringify(c));}
+function loadConfig(){var c=REMOTE.config||{};CONFIG_FIELDS.forEach(function(id){var el=document.getElementById(id);if(el&&c[id]!==undefined)el.value=c[id]});}
+function saveConfig(){var c={};CONFIG_FIELDS.forEach(function(id){var el=document.getElementById(id);if(el)c[id]=el.value});REMOTE.config=c;postRemote().catch(function(){});}
 function n(id){var el=document.getElementById(id);if(!el)return null;var v=parseFloat(el.value);return isNaN(v)?null:v}
 function nn(id){return n(id)||0}
 function fmt(v,pre){if(v===null||isNaN(v)||!isFinite(v))return'—';return(pre||'')+(Math.round(v*100)/100).toFixed(2)}
@@ -699,7 +711,7 @@ function recalc(){
   if(rkValRoiEl&&roiEl){rkValRoiEl.textContent=roiEl.textContent;rkValRoiEl.style.color=roiEl.style.color}
 }
 function renderHistorico(){
-  var all=loadAll();
+  var all=REMOTE.months||{};
   var months=['2025-07','2025-08','2025-09','2025-10','2025-11','2025-12'].filter(function(m){return all[m]});
   if(!months.length){set('historico-content','Guardá datos de cada mes para ver el histórico aquí.');set('rk-historico-mini','Guardá datos de más de un mes para ver la tendencia acá.');return}
   var names={'2025-07':'Jul','2025-08':'Ago','2025-09':'Sep','2025-10':'Oct','2025-11':'Nov','2025-12':'Dic'};
@@ -754,16 +766,23 @@ function exportReport(){
   document.getElementById('print-report').innerHTML=html;
   window.print();
 }
-var JULY_SEED={'m-chats':'1173','m-inv':'303','x-reg-m':'35','e-visits':'716','e-leads':'78','e-inv':'41','c-visits':'166','c-leads':'86','c-inv':'0','em-sent':'63000','em-open':'5688','em-click':'350','em-inv':'382','x-reg-em':'6','x-reg-wa':'7','x-mem-org':'10','x-dip-org':'4'};
-function seedJulyIfMissing(){
-  var all=loadAll();
-  if(!all['2025-07']){
-    all['2025-07']=JULY_SEED;
-    localStorage.setItem(SK,JSON.stringify(all));
-  }
+function initApp(){
+  var loadingEl=document.getElementById('load-status');
+  var hadError=false;
+  fetch('/api/data').then(function(r){
+    if(!r.ok)throw new Error('fetch failed');
+    return r.json();
+  }).then(function(data){
+    REMOTE=data&&data.months?data:{months:{},config:{}};
+  }).catch(function(){
+    hadError=true;
+    if(loadingEl){loadingEl.textContent='No se pudo conectar con el almacenamiento compartido. Los datos no se van a guardar hasta que recargues la página.';loadingEl.style.color='#993356'}
+  }).then(function(){
+    loadMonth(currentMonth);loadConfig();renderHistorico();
+    if(loadingEl&&!hadError)loadingEl.parentNode.removeChild(loadingEl);
+  });
 }
-seedJulyIfMissing();
-loadMonth(currentMonth);loadConfig();renderHistorico();
+initApp();
 </script>
 </body>
 </html>
