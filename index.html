@@ -193,7 +193,7 @@
       <div class="section-title">Resultado del mes</div>
       <div class="kpi-row"><span class="kpi-name">Valor generado (LTV inscriptas)</span><span class="kpi-val" id="rk-val-total">—</span></div>
       <div class="kpi-row"><span class="kpi-name">Inversión de marketing</span><span class="kpi-val" id="rk-val-inv">—</span></div>
-      <div class="kpi-row" style="padding-top:8px;margin-top:2px;border-top:0.5px solid rgba(0,0,0,.12)"><span style="font-size:13px;font-weight:500">ROI</span><span style="font-size:16px;font-weight:500" id="rk-val-roi">—</span></div>
+      <div class="kpi-row" style="padding-top:8px;margin-top:2px;border-top:0.5px solid rgba(0,0,0,.12)"><span style="font-size:13px;font-weight:500">Por cada $1 invertido</span><span style="font-size:16px;font-weight:500" id="rk-val-roi">—</span></div>
       <div class="funnel-note" style="margin-top:6px">Ver supuestos de precio y LTV en la pestaña Valor & ROI.</div>
     </div>
     <div class="block">
@@ -232,7 +232,7 @@
         <div class="kpi-row" style="margin-top:4px;padding-top:6px;border-top:0.5px solid rgba(0,0,0,.08)"><span class="kpi-name">Total inscriptas</span><span class="kpi-val" id="m-insc-total">—</span></div>
         <div class="kpi-row"><span class="kpi-name">Costo por inscripta</span><span class="kpi-val" id="m-cpi-canal">—</span></div>
         <div class="kpi-row"><span class="kpi-name">Valor generado (LTV)</span><span class="kpi-val" id="m-val-total">—</span></div>
-        <div class="kpi-row"><span style="font-size:13px;font-weight:500">ROI del canal</span><span class="kpi-val" style="font-weight:500" id="m-roi">—</span></div>
+        <div class="kpi-row"><span style="font-size:13px;font-weight:500">Por cada $1 invertido</span><span class="kpi-val" style="font-weight:500" id="m-roi">—</span></div>
       </div>
     </div>
     <div class="block">
@@ -283,7 +283,7 @@
         <div class="kpi-row" style="margin-top:4px;padding-top:6px;border-top:0.5px solid rgba(0,0,0,.08)"><span class="kpi-name">Total inscriptas</span><span class="kpi-val" id="em-insc-total">—</span></div>
         <div class="kpi-row"><span class="kpi-name">Costo por inscripta</span><span class="kpi-val" id="em-cpi-canal">—</span></div>
         <div class="kpi-row"><span class="kpi-name">Valor generado (LTV)</span><span class="kpi-val" id="em-val-total">—</span></div>
-        <div class="kpi-row"><span style="font-size:13px;font-weight:500">ROI del canal</span><span class="kpi-val" style="font-weight:500" id="em-roi">—</span></div>
+        <div class="kpi-row"><span style="font-size:13px;font-weight:500">Por cada $1 invertido</span><span class="kpi-val" style="font-weight:500" id="em-roi">—</span></div>
       </div>
     </div>
     <div class="block">
@@ -307,7 +307,7 @@
         <div class="kpi-row" style="margin-top:4px;padding-top:6px;border-top:0.5px solid rgba(0,0,0,.08)"><span class="kpi-name">Total inscriptas</span><span class="kpi-val" id="wa-insc-total">—</span></div>
         <div class="kpi-row"><span class="kpi-name">Costo por inscripta</span><span class="kpi-val" id="wa-cpi-canal">—</span></div>
         <div class="kpi-row"><span class="kpi-name">Valor generado (LTV)</span><span class="kpi-val" id="wa-val-total">—</span></div>
-        <div class="kpi-row"><span style="font-size:13px;font-weight:500">ROI del canal</span><span class="kpi-val" style="font-weight:500" id="wa-roi">—</span></div>
+        <div class="kpi-row"><span style="font-size:13px;font-weight:500">Por cada $1 invertido</span><span class="kpi-val" style="font-weight:500" id="wa-roi">—</span></div>
       </div>
     </div>
     <div class="block" style="border-color:rgba(0,0,0,.2)">
@@ -538,10 +538,10 @@
         <div class="kpi-row"><span class="kpi-name">Valor total generado</span><span class="kpi-val" id="val-total" style="font-size:15px">—</span></div>
         <div class="kpi-row"><span class="kpi-name">Inversión de marketing</span><span class="kpi-val" id="val-inv">—</span></div>
         <div class="kpi-row" style="padding-top:10px;margin-top:4px;border-top:0.5px solid rgba(0,0,0,.12)">
-          <span style="font-size:13px;font-weight:500">ROI</span>
+          <span style="font-size:13px;font-weight:500">Por cada $1 invertido</span>
           <span style="font-size:18px;font-weight:500;color:#3B6D11" id="val-roi">—</span>
         </div>
-        <div class="funnel-note" style="margin-top:6px">ROI = (valor generado − inversión) / inversión. Se calcula sobre el LTV completo de las inscriptas captadas este mes.</div>
+        <div class="funnel-note" style="margin-top:6px">Se calcula como valor generado ÷ inversión, sobre el LTV completo de las inscriptas captadas este mes.</div>
       </div>
     </div>
   </div>
@@ -656,9 +656,9 @@ function recalc(){
   set('val-reg',usd(vReg));set('val-ace',usd(vAce));set('val-dip',usd(vDip));set('val-mem',usd(vMem));
   set('val-total',usd(vTotal));
   set('val-inv',totalInv>0?'USD '+Math.round(totalInv).toLocaleString('es-AR'):'—');
-  var roi=(vTotal>0&&totalInv>0)?((vTotal-totalInv)/totalInv*100):null;
+  var roiMult=(vTotal>0&&totalInv>0)?(vTotal/totalInv):null;
   var roiEl=document.getElementById('val-roi');
-  if(roiEl){roiEl.textContent=roi!==null?Math.round(roi).toLocaleString('es-AR')+'x':'—';roiEl.style.color=roi>0?'#3B6D11':'#993356';}
+  if(roiEl){roiEl.textContent=roiMult!==null?('$'+Math.round(roiMult).toLocaleString('es-AR')):'—';roiEl.style.color=(roiMult!==null&&roiMult>1)?'#3B6D11':'#993356';}
 
   // ROI por canal — mismo LTV por producto, aplicado a las inscriptas de cada canal
   var chanInvMap={m:mI,wa:waI,em:emI};
@@ -667,9 +667,9 @@ function recalc(){
     var chVal=(cp.reg||0)*ltvReg+(cp.ace||0)*ltvAce+(cp.dip||0)*ltvDip+(cp.mem||0)*ltvMem;
     var chInv=chanInvMap[ch];
     set(ch+'-val-total',usd(chVal));
-    var chRoi=(chVal>0&&chInv>0)?((chVal-chInv)/chInv*100):null;
+    var chMult=(chVal>0&&chInv>0)?(chVal/chInv):null;
     var chRoiEl=document.getElementById(ch+'-roi');
-    if(chRoiEl){chRoiEl.textContent=chRoi!==null?Math.round(chRoi).toLocaleString('es-AR')+'x':'—';chRoiEl.style.color=chRoi>0?'#3B6D11':'#993356';}
+    if(chRoiEl){chRoiEl.textContent=chMult!==null?('$'+Math.round(chMult).toLocaleString('es-AR')):'—';chRoiEl.style.color=(chMult!==null&&chMult>1)?'#3B6D11':'#993356';}
   });
 
   // Resumen ejecutivo — ranking de canales
@@ -755,7 +755,7 @@ function exportReport(){
   html+='<div class="pr-section-title">Resultado e inversión por canal</div>';
   html+='<table><tr><th>Canal</th><th>Inversión</th><th>Inscriptas</th><th>Costo / inscripta</th></tr>'+tableRows+'</table>';
   html+='<div class="pr-section-title">Valor generado y ROI</div>';
-  html+='<table><tr><th>Valor generado (LTV)</th><th>Inversión</th><th>ROI</th></tr><tr><td>'+document.getElementById('rk-val-total').textContent+'</td><td>'+document.getElementById('rk-val-inv').textContent+'</td><td>'+document.getElementById('rk-val-roi').textContent+'</td></tr></table>';
+  html+='<table><tr><th>Valor generado (LTV)</th><th>Inversión</th><th>Por cada $1 invertido</th></tr><tr><td>'+document.getElementById('rk-val-total').textContent+'</td><td>'+document.getElementById('rk-val-inv').textContent+'</td><td>'+document.getElementById('rk-val-roi').textContent+'</td></tr></table>';
   var comentarios=(document.getElementById('comentarios').value||'').trim();
   if(comentarios){
     var esc=document.createElement('div');esc.textContent=comentarios;
@@ -778,7 +778,7 @@ function initApp(){
     hadError=true;
     if(loadingEl){loadingEl.textContent='No se pudo conectar con el almacenamiento compartido. Los datos no se van a guardar hasta que recargues la página.';loadingEl.style.color='#993356'}
   }).then(function(){
-    loadMonth(currentMonth);loadConfig();renderHistorico();
+    loadMonth(currentMonth);loadConfig();recalc();renderHistorico();
     if(loadingEl&&!hadError)loadingEl.parentNode.removeChild(loadingEl);
   });
 }
